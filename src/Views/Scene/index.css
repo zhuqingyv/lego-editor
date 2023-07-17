@@ -1,0 +1,14 @@
+.scene-item-container {
+  width: 375px;
+  height: 100%;
+  display: inline-block;
+  scroll-snap-align: start;
+  transform: scale(1);
+  transition: all 0.3s;
+}
+.scene-item-center-container {
+  width: 375px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

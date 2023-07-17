@@ -1,0 +1,53 @@
+.tree-container {
+  width: 100%;
+  min-height: 400px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  overflow: scroll;
+  transform: scale(1);
+  padding-top: 6px;
+}
+
+.tree-item-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 10px;
+  line-height: 10px;
+  height: 20px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  padding-left: 6px;
+  margin-left: 10px;
+}
+.tree-item-container img {
+  width: 10px;
+  height: 10px;
+  object-fit: contain;
+  margin-right: 6px;
+}
+
+.tree-item-container-active {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 10px;
+  line-height: 10px;
+  height: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s;
+  border-radius: 4px;
+  padding-left: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-sizing: border-box;
+  margin-right: 6px;
+  margin-left: 10px;
+}
+
+.tree-item-container-active img {
+  width: 10px;
+  height: 10px;
+  object-fit: contain;
+  margin-right: 6px;
+}

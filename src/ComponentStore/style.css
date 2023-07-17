@@ -1,0 +1,22 @@
+.ComponentStore-container {
+  width: 400px;
+  background-color: #fafafa;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.ComponentStore-list-container {
+  width: 100%;
+  background-color: #fafafa;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  flex-wrap: wrap;
+}
