@@ -1,8 +1,32 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import { createRoot } from 'react-dom/client';
+import {
+  createHashRouter,
+  RouterProvider,
+} from "react-router-dom";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <App />
-)
+import Lego from './Lego';
+import PageList from './PageList';
+import './index.css';
+
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <PageList />
+  },
+  {
+    path: 'page/:pageId',
+    element: <Lego />,
+  }
+])
+
+createRoot(document.getElementById('app')!).render(<RouterProvider router={router} />);
+
+// http('components')
+//   .then((res) => {
+//     debugger;
+//   })
+
+// http('pageList')
+//   .then((res) => {
+//     debugger;
+//   })

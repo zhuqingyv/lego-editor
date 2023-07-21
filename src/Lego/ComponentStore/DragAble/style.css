@@ -1,0 +1,41 @@
+.drag-able-container {
+  width: 80px;
+  background-color: #fafafa;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 4px;
+  margin-right: 12px;
+  margin-bottom: 12px;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.drag-able-container:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.drag-able-icon-container {
+  width: 80px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.drag-able-icon {
+  width: 50px;
+  height: 50;
+  object-fit: contain;
+  transition: all 0.3s;
+}
+.drag-able-icon:hover {
+  transform: scale(1.1);
+}
+.drag-able-name {
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: #323233;
+  background-color: rgba(0,0,0,0.05);
+  padding-bottom: 6px;
+  padding-top: 6px;
+}
