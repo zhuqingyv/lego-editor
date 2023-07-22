@@ -9,13 +9,13 @@ import { toast } from 'react-toast'
 import Engine from './Engine';
 // @ts-ignore
 import DropAble from './DropAble';
+import RectInspect from './RectInspect';
 // @ts-ignore
-import http from '@http';
+import service from '@service';
 import './style.css';
 
 const Editor = () => {
   const [state, setState] = useSignal('app');
-  const { dsl } = state;
 
   const findDSLInstance = ({ id, ifDelete = false }: any) => {
     let result;
@@ -33,7 +33,7 @@ const Editor = () => {
         };
       });
     };
-    findLoop(state?.dsl);
+    findLoop(state.dsl);
   
     return result
   };
@@ -48,7 +48,7 @@ const Editor = () => {
           toast.hideAll();
           toast.success('更新成功!');
           setTimeout(() => toast.hideAll(), 1000);
-          http.fetch('setPage', { page: state })
+          service('setPage', state);
         })
     };
   }, []);
@@ -73,11 +73,12 @@ const Editor = () => {
     <DropAble>
       <div className="editor-container">
         <div className='editor-preview'>
-          <Engine dsl={dsl} />
+          <Engine />
         </div>
+        <RectInspect />
       </div>
     </DropAble>
-  )
+  );
 };
 
 export default Editor;

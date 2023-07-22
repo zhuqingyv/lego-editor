@@ -11,10 +11,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      'events': path.resolve('./src/Lego/Events/index.ts'),
+      'events': path.resolve('./src/Lego/base/Events/index.ts'),
       'const': path.resolve('./src/Lego/const/index.ts'),
-      'creator': path.resolve('./src/Lego/ComponentCreator/index.ts'),
-      '@http': path.resolve('./src/common/index.js'),
+      'creator': path.resolve('./src/Lego/base/ComponentCreator/index.ts'),
       '@service': path.resolve('./src/common/service.js'),
       'lib': path.resolve('./src/common/lib.js')
     }

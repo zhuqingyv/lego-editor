@@ -14,7 +14,7 @@ class ComponentCreator {
   }
   components = new Map();
 
-  create = ({ name, icon, schema, defaultValue, editorView, view }: CreateParams) => {
+  create = ({ name, icon, schema, editorView, view }: CreateParams) => {
     // 查重
     if (this.components.get(name)) {
       console.warn(`『${name}』is repeat!`);

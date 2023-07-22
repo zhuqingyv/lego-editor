@@ -49,11 +49,18 @@ const config = {
     return gitLabService.readFile(`${path}/${id}.json`);
   },
 
+  // 修改页面信息
+  'setPage': async (page, isDev = false) => {
+    const { id, name, dsl, rnVersion, icon, status } = page;
+    const path = isDev ? 'src-dev/pages' : 'src/pages';
+    return gitLabService.writeFile(`${path}/${id}.json`, JSON.stringify({ id, name, dsl, rnVersion, icon, status }));
+  },
+
   // 获取组件
   'components': async(isDev = false) => {
     const path = isDev ? 'src-dev/components' : 'src/components';
     return gitLabService.reduceFolderFile(path);
-  }
+  },
 };
 
 

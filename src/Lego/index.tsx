@@ -1,19 +1,22 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import Lottie from 'lottie-react';
+window.React = React;
+// @ts-ignore
+window.Lottie = Lottie;
 import { useParams } from 'react-router-dom'
 // @ts-ignore
 import { createSignal, useSignal } from 'react-use-signal';
 import { ToastContainer } from 'react-toast';
-import './Views';
-import './HotKey';
+// @ts-ignore
+import { HotKey } from './base/HotKey';
 import HeaderView from './Header';
 import Editor from './Editor/index';
 import ComponentStore from './ComponentStore';
 // @ts-ignore
-import ComponentEditor from './ComponentEditor';
+import { creator } from 'creator';
+import componentLoader from './base/ComponentLoader';
 import Props from './Props';
 import Tree from './Tree';
-import asyncJsxBuilder from './AsyncJsxBuilder';
-import AsyncCssBuilder from './AsyncCssBuilder';
 // @ts-ignore
 import scriptLoader from '../ScriptLoader';
 // @ts-ignore
@@ -23,8 +26,6 @@ import { safeParse } from 'lib';
 import './style.css';
 
 const loadLib = async() => {
-  await scriptLoader('https://unpkg.com/react@18/umd/react.production.min.js');
-  await scriptLoader('https://unpkg.com/react-dom@18/umd/react-dom.production.min.js');
   await scriptLoader('https://unpkg.com/babel-standalone@6/babel.min.js');
 };
 
@@ -35,7 +36,7 @@ createSignal('app', {
   dsl: [],
   material: [],
   status: 0,
-  isDev: true
+  isDev: false
 }, 'key', false);
 
 const Lego = () => {
@@ -50,12 +51,14 @@ const Lego = () => {
         setState({ dsl, icon, id, name, status: 1 });
       };
     });
-    service('components').then(async(res: any) => {
-      await loadLibPromise;
-      debugger;
-      // await asyncJsxBuilder(res);
-      // const material = creator.outputList();
-      // setState({ material });
+    service('components').then(async(res: any[]) => {
+      // @ts-ignore
+      if (!window?.Babel) await loadLibPromise;
+      res.forEach((component:any) => {
+        creator.create(componentLoader(component));
+      });
+      const material = creator.outputList();
+      setState({ material });
     })
   }, [])
 
@@ -74,6 +77,7 @@ const Lego = () => {
       <div style={{ zoom: 0.5, zIndex: 9999 }}>
         <ToastContainer position='top-left' />
       </div>
+      <HotKey />
       {/* <ComponentEditor /> */}
     </>
   );

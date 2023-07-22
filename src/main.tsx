@@ -20,13 +20,3 @@ const router = createHashRouter([
 ])
 
 createRoot(document.getElementById('app')!).render(<RouterProvider router={router} />);
-
-// http('components')
-//   .then((res) => {
-//     debugger;
-//   })
-
-// http('pageList')
-//   .then((res) => {
-//     debugger;
-//   })

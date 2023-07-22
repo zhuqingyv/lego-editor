@@ -42,18 +42,16 @@ const Props = () => {
         form.setValues(currentComponent.schemaValue);
         return;
       };
-      setTimeout(() => {
-        const defaultValue = form.getValues();
-        form.setValues(defaultValue);
-        const { id } = currentComponent;
-        events.emit(EVENTS.UPDATE_COMPONENT_SCHEMA_VALUE, { id, value: defaultValue });
-      })
+      const defaultValue = form.getValues();
+      form.setValues(defaultValue);
+      const { id } = currentComponent;
+      events.emit(EVENTS.UPDATE_COMPONENT_SCHEMA_VALUE, { id, value: defaultValue });
     };
   }, [currentComponent]);
 
   return (
     <div className="Props-container" style={{ maxHeight: window.innerHeight - 50 }}>
-      <span className='Props-title'>{ currentComponent?.name }</span>
+      <span className='Props-title'>{ currentComponent?.name || '未选中组件' }</span>
       <FormRender
         id={currentComponent?.id}
         form={form}
@@ -62,7 +60,7 @@ const Props = () => {
         watch={{
           '#': onChange
         }}
-        footer={true}
+        // footer={true}
         column={1}
       />
     </div>

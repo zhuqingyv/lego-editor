@@ -126,10 +126,7 @@ class HttpGitLabService {
       headers: {
         'PRIVATE-TOKEN': accessToken
       }
-    })
-      .then(async(response) => {
-        debugger;
-      })
+    });
   };
 };
 

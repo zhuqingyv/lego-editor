@@ -1,6 +1,7 @@
 import { useSignal } from 'react-use-signal';
 import { toast } from 'react-toast';
-import http from '@http';
+import service from '@service';
+
 import { events } from 'events';
 import { EVENTS } from 'const';
 import { useEffect } from 'react';
@@ -24,9 +25,10 @@ const SaveButton = () => {
   const { id, dsl } = state;
 
   const onSave = () => {
-    const page = zipDSL(dsl);
-    
-    http.fetch('setPage', { page: { id, dsl: page } })
+    const newDsl = zipDSL(dsl);
+    const { id, name, rnVersion, icon, status } = state;
+
+    service('setPage', { id, name, dsl: newDsl, rnVersion, icon, status })
     .then(() => {
       toast.hideAll();
       toast.success('保存成功!');
