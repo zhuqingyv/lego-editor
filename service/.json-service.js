@@ -8,14 +8,14 @@ module.exports = () => {
     url,
     port,
     service: {
-      // 获取页面列表
+      // 获取页面列表 *********
       '/get-page-list': {
         methods: 'get',
         handle: ({ json, res }) => {
           res.status(200).json(json);
         }
       },
-      // 根据ID获取页面信息
+      // 根据ID获取页面信息 **********
       '/get-page': {
         methods: 'get',
         handle: ({ json, params = {}, res, req }) => {
@@ -50,7 +50,7 @@ module.exports = () => {
           return res.status(400).json(page);
         }
       },
-      // 新增一个页面
+      // 新增一个页面 *********
       '/add-page': {
         methods: 'get',
         handle: ({ json, params = {}, res, req, updateJson }) => {
@@ -88,6 +88,7 @@ module.exports = () => {
           return res.status(400).json(page);
         }
       },
+      // 获取组件 *********
       '/get-components': {
         methods: 'get',
         handle: ({ json, res }) => {
