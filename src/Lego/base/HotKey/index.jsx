@@ -5,6 +5,7 @@ import { creator } from 'creator';
 import { useSignal } from 'react-use-signal';
 
 class HotKeyCore {
+  event = null;
   cacheKey = [];
   _current = null;
 
@@ -17,7 +18,7 @@ class HotKeyCore {
       }
     });
 
-    document.addEventListener('keyup', () => {
+    document.addEventListener('keyup', (event) => {
       const { key } = event;
       if (this.cacheKey.includes(key)) {
         this.cacheKey.splice(this.cacheKey.indexOf(key), 1);
@@ -45,8 +46,8 @@ class HotKeyCore {
     });
 
     if (truthy) {
+      this.event = event;
       this.current = truthy;
-      event.preventDefault();
     };
   };
 
@@ -56,7 +57,7 @@ class HotKeyCore {
 
   set current(value) {
     this._current = value;
-    if (this.onUpdate) this.onUpdate(this._current);
+    if (this.onUpdate) this.onUpdate(this._current, this.event);
   };
 };
 
@@ -64,8 +65,9 @@ class HotKeys extends HotKeyCore {
   constructor(...arg) {
     super(...arg);
   };
-  onUpdate = (hotKey) => {
+  onUpdate = (hotKey, event) => {
     if (this.callback) this.callback({
+      event,
       hotkeys: hotKey,
       value: hotKey.join('+')
     })
@@ -96,7 +98,7 @@ export const HotKey = () => {
     return setState({ dsl: state.dsl });
   };
 
-  const hotKeyCallback = async({ value }) => {
+  const hotKeyCallback = async({ value, event }) => {
     switch(value) {
       case 'Meta+Backspace': {
         events.emit(EVENTS.DELETE_COMPONENT_INSTANCE);
@@ -104,11 +106,13 @@ export const HotKey = () => {
       }
       case 'Meta+s': {
         events.emit(EVENTS.SAVE);
+        event.preventDefault();
         break;
       }
       case 'Meta+c': {
         const { currentComponent } = state;
         if (currentComponent) {
+          event.preventDefault();
           setState({ copyComponent: currentComponent })
         };
         break;
@@ -117,6 +121,7 @@ export const HotKey = () => {
         const { copyComponent } = state;
         if (copyComponent) {
           const componentInstance = buildComponentInstance(copyComponent);
+          event.preventDefault();
           await addComponent(componentInstance);
           events.emit(EVENTS.SAVE);
         };

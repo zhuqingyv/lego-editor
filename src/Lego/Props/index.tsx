@@ -18,9 +18,12 @@ const getSchema = (name: string = '', state: any) => {
 
 const Props = () => {
   const timer = useRef(setTimeout(() => null));
-  const [state] = useSignal('app');
+  const [state, setState] = useSignal('app');
   const form = useForm();
   const { currentComponent } = state;
+  const onClickForm = () => {
+    setState({ copyComponent: null });
+  };
 
   const onFinish = (formData: any) => {
     const { id } = currentComponent;
@@ -52,7 +55,7 @@ const Props = () => {
   return (
     <div className="props-container" style={{ maxHeight: window.innerHeight - 50 }}>
       <span className='props-title'>{ currentComponent?.name ? `◉ ${currentComponent?.name}` : '◌ 未选中组件' }</span>
-      <div className='props-form-container'>
+      <div className='props-form-container' onClick={onClickForm}>
         <FormRender
           id={currentComponent?.id}
           form={form}
