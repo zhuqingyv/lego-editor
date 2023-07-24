@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { events } from 'events';
 import { EVENTS } from 'const';
+import { creator } from 'creator';
 import { useSignal } from 'react-use-signal';
 
 class HotKeyCore {
@@ -77,8 +78,25 @@ const hotKey = new HotKeys(
 );
 
 export const HotKey = () => {
-  const [state] = useSignal('app');
-  const hotKeyCallback = ({ value }) => {
+  const [state, setState] = useSignal('app');
+
+  const buildComponentInstance = (component) => {
+    const componentInstance = creator.build({ name: component.name });
+    const { schemaValue } = component;
+    Object.assign(componentInstance, { schemaValue });
+    return componentInstance;
+  };
+
+  const addComponent = (component) => {
+    if (state.currentComponent) {
+      state.currentComponent.children.push(component);
+    } else {
+      state.dsl.push(component);
+    };
+    return setState({ dsl: state.dsl });
+  };
+
+  const hotKeyCallback = async({ value }) => {
     switch(value) {
       case 'Meta+Backspace': {
         events.emit(EVENTS.DELETE_COMPONENT_INSTANCE);
@@ -90,12 +108,18 @@ export const HotKey = () => {
       }
       case 'Meta+c': {
         const { currentComponent } = state;
-        console.log('复制', currentComponent);
+        if (currentComponent) {
+          setState({ copyComponent: currentComponent })
+        };
         break;
       }
       case 'Meta+v': {
-        const { currentComponent } = state;
-        console.log('粘贴', state);
+        const { copyComponent } = state;
+        if (copyComponent) {
+          const componentInstance = buildComponentInstance(copyComponent);
+          await addComponent(componentInstance);
+          events.emit(EVENTS.SAVE);
+        };
         break;
       }
     }

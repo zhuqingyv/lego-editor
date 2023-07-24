@@ -6,7 +6,8 @@ window.Lottie = Lottie;
 import { useParams } from 'react-router-dom'
 // @ts-ignore
 import { createSignal, useSignal } from 'react-use-signal';
-import { ToastContainer } from 'react-toast';
+
+import ToastContainer from './Toast';
 // @ts-ignore
 import { HotKey } from './base/HotKey';
 import HeaderView from './Header';
@@ -31,23 +32,28 @@ const loadLib = async() => {
 
 const loadLibPromise = loadLib();
 
-createSignal('app', {
-  currentComponent: null,
+const [_, setState] = createSignal('app', {
   dsl: [],
+  // 当前选中的组件
+  currentComponent: null,
+  // 物料
   material: [],
+  // 标记页面加载状态
   status: 0,
-  isDev: false
+  // 后面做dev功能
+  isDev: false,
+  // 用于复制粘贴
+  copyComponent: null
 }, 'key', false);
 
 const Lego = () => {
   const { pageId } = useParams();
-  const [state, setState] = useSignal('app');
 
   useEffect(() => {
     service('pageInfo', pageId).then((res: any) => {
       const page = safeParse(res, null);
       if (page) {
-        const { dsl, icon, id, name, status } = page;
+        const { dsl, icon, id, name } = page;
         setState({ dsl, icon, id, name, status: 1 });
       };
     });
@@ -66,7 +72,7 @@ const Lego = () => {
     <>
       <HeaderView />
       {
-        (state.status === 1) && <div className='container'>
+        <div className='container'>
           <ComponentStore>
             <Tree />
           </ComponentStore>
@@ -74,10 +80,8 @@ const Lego = () => {
           <Props />
         </div>
       }
-      <div style={{ zoom: 0.5, zIndex: 9999 }}>
-        <ToastContainer position='top-left' />
-      </div>
       <HotKey />
+      <ToastContainer />
       {/* <ComponentEditor /> */}
     </>
   );

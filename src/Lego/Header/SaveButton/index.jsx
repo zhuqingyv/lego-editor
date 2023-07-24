@@ -1,5 +1,5 @@
 import { useSignal } from 'react-use-signal';
-import { toast } from 'react-toast';
+import { toast } from 'toast';
 import service from '@service';
 
 import { events } from 'events';
@@ -25,14 +25,13 @@ const SaveButton = () => {
   const { id, dsl } = state;
 
   const onSave = () => {
-    const newDsl = zipDSL(dsl);
+    const newDsl = zipDSL(state.dsl);
     const { id, name, rnVersion, icon, status } = state;
 
-    service('setPage', { id, name, dsl: newDsl, rnVersion, icon, status })
+    if (status < 1) return;
+    service('setPage', { id, name, dsl: newDsl, rnVersion, icon })
     .then(() => {
-      toast.hideAll();
-      toast.success('保存成功!');
-      setTimeout(() => toast.hideAll(), 1000)
+      toast('保存成功!');
     })
   };
 

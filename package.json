@@ -27,7 +27,7 @@
     "react-router-dom": "^6.14.2",
     "react-switch": "^7.0.0",
     "react-toast": "^1.0.3",
-    "react-use-signal": "^1.0.13",
+    "react-use-signal": "^1.0.14",
     "react-uuid": "^2.0.0"
   },
   "devDependencies": {

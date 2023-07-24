@@ -72,7 +72,7 @@ const RectInspect = () => {
         element.onclick = (event: any) => {
           event.stopPropagation();
           setState({ currentComponent: item });
-        };
+        }
       };
     };
     if (!state.rectRegister) setState({ rectRegister });
@@ -80,27 +80,30 @@ const RectInspect = () => {
 
   const onUpdate = () => {
     const { currentComponent } = state;
-    if (currentComponent) {
-      const canvas = document.querySelector('.rect-inspect-canvas') as HTMLCanvasElement;
+    const canvas = document.querySelector('.rect-inspect-canvas') as HTMLCanvasElement;
       if (canvas) {
-        const { id } = currentComponent;
-        const element = rect.getRect(id);
-        if (element) {
-          const { x, y, width, height } = element.getBoundingClientRect();
-          const canvasRect = canvas.getBoundingClientRect();
-          drawRectangle({
-            x: x - canvasRect.x,
-            y: y - canvasRect.y,
-            width,
-            height,
-            borderWidth: 0.5,
-            borderColor: 'rgba(0,100,255,1)',
-            backgroundColor: 'rgba(0,100,255,0.2)',
-            canvas
-          })
-        };
+        if (currentComponent) {
+          const { id } = currentComponent;
+          const element = rect.getRect(id);
+          if (element) {
+            const { x, y, width, height } = element.getBoundingClientRect();
+            const canvasRect = canvas.getBoundingClientRect();
+            drawRectangle({
+              x: x - canvasRect.x,
+              y: y - canvasRect.y,
+              width,
+              height,
+              borderWidth: 0.5,
+              borderColor: 'rgba(0,100,255,1)',
+              backgroundColor: 'rgba(0,100,255,0.2)',
+              canvas
+            })
+          };
+        } else {
+          const ctx = canvas.getContext('2d');
+          ctx?.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        }
       };
-    };
 
     requestAnimationFrame(onUpdate);
   };

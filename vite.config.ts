@@ -15,7 +15,8 @@ export default defineConfig({
       'const': path.resolve('./src/Lego/const/index.ts'),
       'creator': path.resolve('./src/Lego/base/ComponentCreator/index.ts'),
       '@service': path.resolve('./src/common/service.js'),
-      'lib': path.resolve('./src/common/lib.js')
+      'lib': path.resolve('./src/common/lib.js'),
+      'toast': path.resolve('./src/Lego/Toast/index.tsx')
     }
   },
   define: {

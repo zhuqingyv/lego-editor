@@ -4,7 +4,7 @@ import { useSignal } from 'react-use-signal';
 // @ts-ignore
 import DropAble from '../DropAble';
 // @ts-ignore
-const EditorView = memo(({ item, rectRegister, material }) => {
+const EditorView = ({ item, rectRegister, material }) => {
   if (!item?.schemaValue) return null;
 
   if (item?.editorView) {
@@ -26,15 +26,16 @@ const EditorView = memo(({ item, rectRegister, material }) => {
   };
 
   return null;
-});
+};
 // @ts-ignore
-const Engine = ({ dsl: currentDSL }) => {
+const Engine = memo(({ dsl: currentDSL }) => {
   const [ dsl ] = useSignal('app', 'dsl');
   const [ rectRegister ] = useSignal('app', 'rectRegister');
   const [ material ] = useSignal('app', 'material');
+
   if (!dsl?.length) return null;
   // @ts-ignore
-  return (currentDSL || dsl).map((item: any, i: number) => <EditorView item={item} rectRegister={rectRegister} material={material} key={`engine-${i}`} />);
-};
+  return [...(currentDSL || dsl)].map((item: any, i: number) => <EditorView item={item} rectRegister={rectRegister} material={material} key={`engine-${i}`} />);
+});
 
 export default Engine;

@@ -5,7 +5,8 @@ import { useSignal } from 'react-use-signal';
 import { EVENTS } from 'const';
 // @ts-ignore
 import { events } from 'events';
-import { toast } from 'react-toast'
+// @ts-ignore
+import { toast } from 'toast'
 import Engine from './Engine';
 // @ts-ignore
 import DropAble from './DropAble';
@@ -16,6 +17,10 @@ import './style.css';
 
 const Editor = () => {
   const [state, setState] = useSignal('app');
+
+  const onClick = () => {
+    setState({ currentComponent: null });
+  };
 
   const findDSLInstance = ({ id, ifDelete = false }: any) => {
     let result;
@@ -39,24 +44,24 @@ const Editor = () => {
   };
 
   const updateComponentSchemaValue = useCallback(({ id, value }: any) => {
+    if (state.status < 1) return;
     const dslInstance = findDSLInstance({ id });
     if (dslInstance) {
       // @ts-ignore
       dslInstance.schemaValue = value;
-      setState({})
+      setState({ dsl: state.dsl })
         .then(() => {
-          toast.hideAll();
-          toast.success('更新成功!');
-          setTimeout(() => toast.hideAll(), 1000);
+          toast('更新成功!');
           service('setPage', state);
         })
     };
   }, []);
 
   const onDeleteComponentInstance = () => {
+    if (state.status < 1) return;
     if (state.currentComponent) {
       findDSLInstance({ id: state?.currentComponent?.id, ifDelete: true });
-      setState({ currentComponent: null });
+      setState({ currentComponent: null, dsl: state.dsl });
     }
   };
 
@@ -71,7 +76,7 @@ const Editor = () => {
 
   return (
     <DropAble>
-      <div className="editor-container">
+      <div className="editor-container" onClick={onClick}>
         <div className='editor-preview'>
           <Engine />
         </div>
