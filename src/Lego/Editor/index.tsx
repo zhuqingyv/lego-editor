@@ -6,7 +6,7 @@ import { EVENTS } from 'const';
 // @ts-ignore
 import { events } from 'events';
 // @ts-ignore
-import { toast } from 'toast'
+import { toast, TypeEnum } from 'toast'
 import Engine from './Engine';
 // @ts-ignore
 import DropAble from './DropAble';
@@ -51,7 +51,7 @@ const Editor = () => {
       dslInstance.schemaValue = value;
       setState({ dsl: state.dsl })
         .then(() => {
-          toast('更新成功!');
+          toast('更新成功!', TypeEnum.SUCCESS);
           service('setPage', state);
         })
     };

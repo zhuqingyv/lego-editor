@@ -57,9 +57,9 @@ const config = {
   },
 
   // 获取组件
-  'components': async(isDev = false) => {
+  'components': async(callback = () => null, isDev = false) => {
     const path = isDev ? 'src-dev/components' : 'src/components';
-    return gitLabService.reduceFolderFile(path);
+    return gitLabService.reduceFolderFile(path, callback);
   },
 };
 

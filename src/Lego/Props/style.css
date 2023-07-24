@@ -1,16 +1,23 @@
-.Props-container {
+.props-container {
   width: 400px;
   height: 100%;
   background-color: #fafafa;
-  padding: 12px;
   box-sizing: border-box;
   overflow: scroll;
-  /* padding-bottom: 100px; */
 }
 
-.Props-title {
+.props-title {
+  display: block;
   font-size: 20px;
   line-height: 20px;
   font-weight: bold;
   margin-bottom: 6px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-indent: 8px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+.props-form-container {
+  padding: 12px;
 }

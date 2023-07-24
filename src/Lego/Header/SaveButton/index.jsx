@@ -1,5 +1,5 @@
 import { useSignal } from 'react-use-signal';
-import { toast } from 'toast';
+import { toast, TypeEnum } from 'toast';
 import service from '@service';
 
 import { events } from 'events';
@@ -31,7 +31,7 @@ const SaveButton = () => {
     if (status < 1) return;
     service('setPage', { id, name, dsl: newDsl, rnVersion, icon })
     .then(() => {
-      toast('保存成功!');
+      toast('保存成功!', TypeEnum.SUCCESS);
     })
   };
 

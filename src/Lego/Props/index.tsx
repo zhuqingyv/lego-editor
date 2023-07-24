@@ -50,19 +50,21 @@ const Props = () => {
   }, [currentComponent]);
 
   return (
-    <div className="Props-container" style={{ maxHeight: window.innerHeight - 50 }}>
-      <span className='Props-title'>{ currentComponent?.name || '未选中组件' }</span>
-      <FormRender
-        id={currentComponent?.id}
-        form={form}
-        schema={currentComponent?.schema || getSchema(currentComponent?.name, state) || {}}
-        onFinish={onFinish}
-        watch={{
-          '#': onChange
-        }}
-        // footer={true}
-        column={1}
-      />
+    <div className="props-container" style={{ maxHeight: window.innerHeight - 50 }}>
+      <span className='props-title'>{ currentComponent?.name ? `◉ ${currentComponent?.name}` : '◌ 未选中组件' }</span>
+      <div className='props-form-container'>
+        <FormRender
+          id={currentComponent?.id}
+          form={form}
+          schema={currentComponent?.schema || getSchema(currentComponent?.name, state) || {}}
+          onFinish={onFinish}
+          watch={{
+            '#': onChange
+          }}
+          // footer={true}
+          column={1}
+        />
+      </div>
     </div>
   )
 };

@@ -34,7 +34,7 @@ class HttpGitLabService {
   };
 
   // 读文件
-  readFile = async (filePath) => {
+  readFile = async (filePath, callback = () => null) => {
     const { apiUrl, projectId, accessToken, branch } = this;
     return axios.get(`${apiUrl}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}`, {
       headers: {
@@ -45,6 +45,7 @@ class HttpGitLabService {
       }
     })
       .then(async (response) => {
+        callback({ type: '加载文件' });
         return decodeBase64String(response.data.content)
       })
 
@@ -65,7 +66,7 @@ class HttpGitLabService {
   };
 
   // 获取文件夹下所有文件
-  reduceFolderFile = async (path = '') => {
+  reduceFolderFile = async (path = '', callback = () => null) => {
     const { apiUrl, projectId, branch, accessToken } = this;
     return axios.get(`${apiUrl}/projects/${projectId}/repository/tree?path=${path}`, {
       headers: {
@@ -80,6 +81,7 @@ class HttpGitLabService {
           const fileList = response.data || [];
           const promiseAll = [];
           const result = [];
+          let progress = 0;
 
           for(let i = 0;i < fileList?.length;i++) {
             const file = fileList[i]
@@ -88,6 +90,10 @@ class HttpGitLabService {
             // 如果是文件
             if (type === 'blob') {
               const promise = this.readFile(path);
+              promise.finally(() => {
+                progress += 1;
+                callback({ type: '加载文件', progress, all: fileList.length });
+              });
               promiseAll.push(promise)
               const contentValue = await promise;
               result.push({ path, name, type, contentValue });
@@ -96,6 +102,10 @@ class HttpGitLabService {
             // 如果是文件夹
             if (type === 'tree') {
               const promise = this.reduceFolderFile(path);
+              promise.finally(() => {
+                progress += 1;
+                callback({ type: '加载文件夹', progress, all: fileList.length });
+              });
               promiseAll.push(promise);
               const children = await promise;
               result.push({ path, name, type, children});

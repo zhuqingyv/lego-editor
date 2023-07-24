@@ -5,9 +5,9 @@ window.React = React;
 window.Lottie = Lottie;
 import { useParams } from 'react-router-dom'
 // @ts-ignore
-import { createSignal, useSignal } from 'react-use-signal';
+import { createSignal } from 'react-use-signal';
 
-import ToastContainer from './Toast';
+import ToastContainer, { toast, TypeEnum } from './Toast';
 // @ts-ignore
 import { HotKey } from './base/HotKey';
 import HeaderView from './Header';
@@ -50,22 +50,27 @@ const Lego = () => {
   const { pageId } = useParams();
 
   useEffect(() => {
+    service('components', ({ type, progress, all }: any) => {
+      toast(`${type}: ${((progress / all) * 100).toFixed(1)}%`, TypeEnum.LOADING)
+    }).then(async(res: any[]) => {
+      toast('开始加载基础库!', TypeEnum.LOADING);
+      // @ts-ignore
+      if (!window?.Babel) await loadLibPromise;
+      res.reverse().forEach((component:any) => {
+        creator.create(componentLoader(component));
+      });
+      const material = creator.outputList();
+      setState({ material });
+      toast('组件 加载成功!', TypeEnum.SUCCESS);
+    });
     service('pageInfo', pageId).then((res: any) => {
       const page = safeParse(res, null);
       if (page) {
         const { dsl, icon, id, name } = page;
         setState({ dsl, icon, id, name, status: 1 });
+        toast('DSL 加载成功!', TypeEnum.SUCCESS);
       };
     });
-    service('components').then(async(res: any[]) => {
-      // @ts-ignore
-      if (!window?.Babel) await loadLibPromise;
-      res.forEach((component:any) => {
-        creator.create(componentLoader(component));
-      });
-      const material = creator.outputList();
-      setState({ material });
-    })
   }, [])
 
   return (
