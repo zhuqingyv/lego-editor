@@ -13,6 +13,7 @@
   flex-direction: row;
   align-items: center;
   font-size: 10px;
+  text-transform: capitalize;
   line-height: 10px;
   cursor: pointer;
   user-select: none;
@@ -37,6 +38,7 @@
   flex-direction: row;
   align-items: center;
   font-size: 10px;
+  text-transform: capitalize;
   line-height: 10px;
   cursor: pointer;
   user-select: none;
