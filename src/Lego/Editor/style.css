@@ -1,11 +1,12 @@
 .editor-container {
   display: flex;
   height: 100%;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   flex: 1;
   position: relative;
+  overflow-y: scroll;
 }
 
 .editor-preview {
@@ -13,7 +14,9 @@
   height: 812px;
   border-radius: 4px;
   background-color: white;
-  transform: scale(1);
+  transform: scale(0.7);
   overflow: scroll;
   box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  flex: 0 0 auto;
+  position: absolute;
 }

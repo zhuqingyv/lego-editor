@@ -101,7 +101,7 @@ const RectInspect = () => {
           };
         } else {
           const ctx = canvas.getContext('2d');
-          ctx?.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+          ctx?.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
         }
       };
 

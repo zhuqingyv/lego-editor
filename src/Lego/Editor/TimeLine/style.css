@@ -1,0 +1,19 @@
+.editor-timeline-container {
+  width: 100%;
+  height: 300px;
+  background-color: white;
+  animation: timeline-show 0.1s 1 linear;
+  animation-fill-mode: forwards;
+
+  align-self: flex-end;
+  order: 3;
+}
+
+@keyframes timeline-show {
+  0%{ 
+    height: 0;
+  }
+  100%{
+    height: 300px;
+  }
+}

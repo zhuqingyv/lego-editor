@@ -1,3 +1,14 @@
+import { memo } from 'react';
+import {
+  compressToBase64,
+  decompressFromBase64,
+
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent,
+
+  compressToUTF16,
+  decompressFromUTF16
+} from 'lz-string';
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
 import { Link } from 'react-router-dom';
@@ -10,22 +21,30 @@ import SaveButton from './SaveButton';
 
 import './style.css';
 
-const Preview = () => {
-  const [state] = useSignal('app');
-  const { id } = state;
+const Preview = memo(() => {
+  const [id] = useSignal('app', 'id');
+  const [dsl] = useSignal('app', 'dsl');
+
+  // 压缩
+  const stringZip = compressToBase64(JSON.stringify({id,dsl}));
+
   return (
     <div className='header-QR-container'>
       <div className='header-QR-button-container'>
         <img className='header-QR-button' src="https://picasso-static.xiaohongshu.com/fe-platform/aa2e0ae046093ea740259c10bd4bebd6257233fc.png" />
         <div className='header-QR'>
-          <QRCode value={`xhsdiscover://rn/lancer-slim/box?id=${id}`} />
+          <QRCode
+            value={`xhsdiscover://rn/lancer-slim/box?id=${id}&dsl=${stringZip}`}
+            renderAs='svg'
+            size={200}
+          />
         </div>
       </div>
     </div>
   )
-};
+});
 
-const DevChangeButton = () => {
+const DevChangeButton = memo(() => {
   const [isDev, setState] = useSignal('app', 'isDev');
   const onChange = (boolean: boolean) => {
     setState(boolean);
@@ -39,9 +58,9 @@ const DevChangeButton = () => {
       uncheckedIcon={<img className='header-dev-change-checkedIcon' src="https://picasso-static.xiaohongshu.com/fe-platform/99cf37d1b42c43b2a7ca4c3574fc151e8e4a8d15.png" />}
     />
   )
-};
+});
 
-const HeaderView = () => {
+const HeaderView = memo(() => {
   return (
     <div className='header-container'>
       <Link to='../../' relative="path" reloadDocument style={{ zIndex: 3 }}>
@@ -53,6 +72,6 @@ const HeaderView = () => {
       <SaveButton/>
     </div>
   );
-};
+});
 
 export default HeaderView;

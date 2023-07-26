@@ -27,7 +27,8 @@ import { safeParse } from 'lib';
 import './style.css';
 
 const loadLib = async() => {
-  await scriptLoader('https://unpkg.com/babel-standalone@6/babel.min.js');
+  await Promise.all([scriptLoader('https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'), scriptLoader('https://unpkg.com/babel-standalone@6/babel.min.js')]);
+  'https://fe-video-qc.xhscdn.com/fe-platform/eb9bf60aa58eefb395eadef40f3a66520f57080e.zip?attname=你大爷的.zip'
 };
 
 const loadLibPromise = loadLib();

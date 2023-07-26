@@ -11,6 +11,7 @@ import Engine from './Engine';
 // @ts-ignore
 import DropAble from './DropAble';
 import RectInspect from './RectInspect';
+import TimeLine from './TimeLine';
 // @ts-ignore
 import service from '@service';
 import './style.css';
@@ -48,6 +49,8 @@ const Editor = () => {
     const dslInstance = findDSLInstance({ id });
     if (dslInstance) {
       // @ts-ignore
+      if (JSON.stringify(dslInstance.schemaValue) === JSON.stringify(value)) return;
+      // @ts-ignore
       dslInstance.schemaValue = value;
       setState({ dsl: state.dsl })
         .then(() => {
@@ -75,14 +78,18 @@ const Editor = () => {
   }, []);
 
   return (
-    <DropAble>
-      <div className="editor-container" onClick={onClick}>
-        <div className='editor-preview'>
-          <Engine />
+    <>
+      <DropAble>
+        <div className="editor-container" onClick={onClick}>
+          <div className='editor-preview'>
+            <Engine />
+          </div>
+          <div style={{ flex: 1 }}></div>
+          {/* <TimeLine /> */}
+          <RectInspect />
         </div>
-        <RectInspect />
-      </div>
-    </DropAble>
+      </DropAble>
+    </>
   );
 };
 

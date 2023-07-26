@@ -33,6 +33,8 @@ type ComponentModel = {
   editorView?: any;
 };
 
+const codeCache = new Map();
+
 const componentLoader = (component: ComponentType) => {
   const { Babel } = window as any;
   if (!Babel) return;
@@ -48,9 +50,13 @@ const componentLoader = (component: ComponentType) => {
     if (type !== Type.BLOB) return;
     switch(name) {
       case AssetName.MAIN: {
+        const cache = codeCache.get(contentValue);
+        if (cache) return cache;
         const { code } = Babel.transform(contentValue, {
           presets: ['es2015', 'react']
         });
+
+        codeCache.set(contentValue, code);
 
         const { icon, editorView } = eval(code) || {};
         componentModel.icon = icon;

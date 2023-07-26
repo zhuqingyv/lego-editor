@@ -42,8 +42,8 @@
   cursor: pointer;
 }
 .header-QR {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   position: absolute;
   background-color: white;
   top: 44px;
@@ -55,6 +55,7 @@
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s;
+  padding: 12px;
 }
 .header-QR-button-container:hover .header-QR {
   opacity: 1;

@@ -2,17 +2,15 @@ import HttpGitLabService from '../HttpGitLabService';
 import { safeParse } from 'lib';
 import uuid from 'react-uuid';
 
-// const apiUrl = 'https://code.devops.xiaohongshu.com/api/v4';
-// const projectId = '32879'; // 替换为你的项目ID
-// const filePath = 'data.json'; // 替换为你的JSON文件路径
-// const accessToken = 'ifQP5tyyi2DYvVfVhsq-';
-// const branch = 'feat-base';
+export const accessToken = 'ifQP5tyyi2DYvVfVhsq-';
+export const projectId = '32879';
+export const branch = 'feat-base';
 
 const gitLabService = new HttpGitLabService({
   apiUrl:  'https://code.devops.xiaohongshu.com/api/v4',
-  projectId: '32879',
-  accessToken: 'ifQP5tyyi2DYvVfVhsq-',
-  branch: 'feat-base'
+  projectId,
+  accessToken,
+  branch
 });
 
 const config = {

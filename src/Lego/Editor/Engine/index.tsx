@@ -3,6 +3,8 @@ import { memo } from 'react';
 import { useSignal } from 'react-use-signal';
 // @ts-ignore
 import DropAble from '../DropAble';
+import LottieZipSourceLoader from '../../base/LottieZipSourceLoader';
+
 // @ts-ignore
 const EditorView = ({ item, rectRegister, material }) => {
   if (!item?.schemaValue) return null;
@@ -10,7 +12,7 @@ const EditorView = ({ item, rectRegister, material }) => {
   if (item?.editorView) {
     const ItemEditorView = memo(item.editorView());
     return (
-      <ItemEditorView rectRegister={(ref:any) => rectRegister(item, ref)} componentInstance={item} { ...item } key={item.id} DropAble={DropAble}>
+      <ItemEditorView lottieZipLoader={LottieZipSourceLoader} rectRegister={(ref:any) => rectRegister(item, ref)} componentInstance={item} { ...item } key={item.id} DropAble={DropAble}>
         { !!(item?.children?.length) && <Engine dsl={item.children} /> }
       </ItemEditorView>
     )
@@ -19,7 +21,7 @@ const EditorView = ({ item, rectRegister, material }) => {
   if (item?.name && material[item.name]) {
     const ItemEditorView = memo(material[item.name]?.editorView());
     return (
-      <ItemEditorView rectRegister={(ref:any) => rectRegister(item, ref)} componentInstance={item} { ...item } key={item.id} DropAble={DropAble}>
+      <ItemEditorView lottieZipLoader={LottieZipSourceLoader} rectRegister={(ref:any) => rectRegister(item, ref)} componentInstance={item} { ...item } key={item.id} DropAble={DropAble}>
         { !!(item?.children?.length) && <Engine dsl={item.children} /> }
       </ItemEditorView>
     );

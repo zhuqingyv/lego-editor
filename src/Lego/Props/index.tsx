@@ -30,19 +30,28 @@ const Props = () => {
     events.emit(EVENTS.UPDATE_COMPONENT_SCHEMA_VALUE, { id, value: formData });
   };
 
-  const onChange = (allValues: any) => {
+  const onChange = () => {
     if (timer?.current) clearTimeout(timer?.current);
 
     timer.current = setTimeout(() => {
-      const { id } = currentComponent;
-      events.emit(EVENTS.UPDATE_COMPONENT_SCHEMA_VALUE, { id, value: allValues });
-    }, 800);
+      const allValues = form.getValues();
+
+      if (JSON.stringify(currentComponent.schemaValue) !== JSON.stringify(allValues)) {
+        const { id } = currentComponent;
+        events.emit(EVENTS.UPDATE_COMPONENT_SCHEMA_VALUE, { id, value: allValues });
+      };
+    }, 500);
   };
 
   useEffect(() => {
     if (currentComponent) {
       if (currentComponent.schemaValue) {
-        form.setValues(currentComponent.schemaValue);
+        const currentValue = form.getValues();
+        if (JSON.stringify(currentValue) !== JSON.stringify(currentComponent.schemaValue)) {
+          setTimeout(() => {
+            form.setValues(currentComponent.schemaValue)
+          })
+        };
         return;
       };
       const defaultValue = form.getValues();
@@ -57,7 +66,6 @@ const Props = () => {
       <span className='props-title'>{ currentComponent?.name ? `◉ ${currentComponent?.name}` : '◌ 未选中组件' }</span>
       <div className='props-form-container' onClick={onClickForm}>
         <FormRender
-          id={currentComponent?.id}
           form={form}
           schema={currentComponent?.schema || getSchema(currentComponent?.name, state) || {}}
           onFinish={onFinish}
