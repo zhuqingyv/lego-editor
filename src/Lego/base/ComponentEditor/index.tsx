@@ -6,31 +6,39 @@ const ratio = 0.7;
 
 const { innerWidth, innerHeight } = window;
 
-const [state, setState] = createSignal('componentEditor', {
+export const [state, setState] = createSignal('componentEditor', {
   down: false,
-  dx: (innerWidth * 0.3) / 2,
-  dy: (innerHeight * 0.3) / 2,
+  x: (innerWidth * 0.3) / 2,
+  y: (innerHeight * 0.3) / 2,
   mx: 0,
-  my: 0
+  my: 0,
+  show: false
 }, 'componentEditor', false);
 
-const onMouseDown = (event) => {
-  const { clientX:mx, clientY:my } = event;
+const onMouseDown = (event: any) => {
+  event.preventDefault();
+  const { clientX, clientY } = event;
   state.down = true;
-  state.mx = mx;
-  state.my = my;
+  state.mx = clientX;
+  state.my = clientY;
 };
 
-const onMouseMOve = (event) => {
+const onMouseMove = (event: any) => {
   if (state.down) {
+    event.preventDefault();
+    const { x, y, mx, my } = state;
     const { clientX, clientY } = event;
-    const x = clientX - state.mx;
-    const y = clientY - state.my;
-    setState({ dx: state.dx + x, dy: state.dy + y, mx: x, my: y });
+    const _x = clientX - mx;
+    const _y = clientY - my;
+    const X = x + _x;
+    const Y = y + _y;
+    setState({ x: X, y: Y, mx: clientX, my: clientY });
   };
 };
-const onMouseUp = () => {
+
+const onMouseUp = (event: any) => {
   state.down = false;
+  event.preventDefault();
 };
 
 const ComponentEditorHeader = () => {
@@ -41,11 +49,11 @@ const ComponentEditorHeader = () => {
 
     if (current) {
       current.onmousedown = onMouseDown;
-      document.addEventListener('mousemove', onMouseMOve);
+      document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
     };
     return () => {
-      document.removeEventListener('mousemove', onMouseMOve);
+      document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     }
   }, []);
@@ -57,8 +65,10 @@ const ComponentEditorHeader = () => {
 
 const ComponentEditor = () => {
   const [state, setState] = useSignal('componentEditor');
-  const { dx, dy } = state;
+  const { show, x, y } = state;
   const { innerWidth, innerHeight } = window;
+
+  if (!show) return null;
 
   return (
     <div
@@ -66,8 +76,8 @@ const ComponentEditor = () => {
       style={{
         width: innerWidth * ratio,
         height: innerHeight * ratio,
-        top: `${dy}px`,
-        left: `${dx}px`
+        top: `${y}px`,
+        left: `${x}px`
       }}>
       <ComponentEditorHeader />
     </div>

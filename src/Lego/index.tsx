@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import Lottie from 'lottie-react';
-window.React = React;
-// @ts-ignore
-window.Lottie = Lottie;
+import './InjectModel';
 import { useParams } from 'react-router-dom'
 // @ts-ignore
 import { createSignal } from 'react-use-signal';
@@ -16,6 +14,7 @@ import ComponentStore from './ComponentStore';
 // @ts-ignore
 import { creator } from 'creator';
 import componentLoader from './base/ComponentLoader';
+import ComponentEditor from './base/ComponentEditor';
 import Props from './Props';
 import Tree from './Tree';
 // @ts-ignore
@@ -27,11 +26,12 @@ import { safeParse } from 'lib';
 import './style.css';
 
 const loadLib = async() => {
-  await Promise.all([scriptLoader('https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'), scriptLoader('https://unpkg.com/babel-standalone@6/babel.min.js')]);
-  'https://fe-video-qc.xhscdn.com/fe-platform/eb9bf60aa58eefb395eadef40f3a66520f57080e.zip?attname=你大爷的.zip'
+  return await Promise.all([scriptLoader('https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'), scriptLoader('https://unpkg.com/babel-standalone@6/babel.min.js')]);
 };
 
 const loadLibPromise = loadLib();
+
+service('userInfo');
 
 const [_, setState] = createSignal('app', {
   dsl: [],
@@ -88,7 +88,7 @@ const Lego = () => {
       }
       <HotKey />
       <ToastContainer />
-      {/* <ComponentEditor /> */}
+      <ComponentEditor />
     </>
   );
 };

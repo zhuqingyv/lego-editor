@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import {
   compressToBase64,
   decompressFromBase64,
@@ -9,35 +9,43 @@ import {
   compressToUTF16,
   decompressFromUTF16
 } from 'lz-string';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
 import { Link } from 'react-router-dom';
 import Switch from "react-switch";
-import QRCode  from 'qrcode.react';
+import QRCodeView from 'qrcode.react';
 // @ts-ignore
 import AddComponentButton from './AddComponentButton';
 // @ts-ignore
 import SaveButton from './SaveButton';
+import QRCode from 'qrcode-generator';
+import { setState as setComponentEditor } from '../base/ComponentEditor';
 
 import './style.css';
 
 const Preview = memo(() => {
+  const [show, setShow] = useState(true);
   const [id] = useSignal('app', 'id');
   const [dsl] = useSignal('app', 'dsl');
 
   // 压缩
-  const stringZip = compressToBase64(JSON.stringify({id,dsl}));
+  const stringZip = compressToBase64(JSON.stringify({ id, dsl }));
+
+  if (!show) return null;
 
   return (
     <div className='header-QR-container'>
       <div className='header-QR-button-container'>
         <img className='header-QR-button' src="https://picasso-static.xiaohongshu.com/fe-platform/aa2e0ae046093ea740259c10bd4bebd6257233fc.png" />
         <div className='header-QR'>
-          <QRCode
+          {/* <QRCodeView
             value={`xhsdiscover://rn/lancer-slim/box?id=${id}&dsl=${stringZip}`}
             renderAs='svg'
             size={200}
-          />
+            onError={onError}
+            max={100}
+          /> */}
         </div>
       </div>
     </div>
@@ -46,8 +54,9 @@ const Preview = memo(() => {
 
 const DevChangeButton = memo(() => {
   const [isDev, setState] = useSignal('app', 'isDev');
-  const onChange = (boolean: boolean) => {
-    setState(boolean);
+  const onChange = async(boolean: boolean) => {
+    await setState(boolean);
+    setComponentEditor({ show: boolean });
   };
   return (
     <Switch
@@ -69,7 +78,7 @@ const HeaderView = memo(() => {
       <Preview />
       <AddComponentButton />
       <DevChangeButton />
-      <SaveButton/>
+      <SaveButton />
     </div>
   );
 });

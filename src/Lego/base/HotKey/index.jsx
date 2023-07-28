@@ -75,7 +75,7 @@ class HotKeys extends HotKeyCore {
 };
 
 const hotKey = new HotKeys(
-  [['Meta', 's'], ['Meta', 'Backspace'], ['Meta', 'c'], ['Meta', 'v']],
+  [['Meta', 's'], ['Meta', 'Backspace'], ['Meta', 'c'], ['Meta', 'v'], ['Meta', 'g']],
   () => null
 );
 
@@ -125,6 +125,15 @@ export const HotKey = () => {
           await addComponent(componentInstance);
           events.emit(EVENTS.SAVE);
         };
+        break;
+      }
+      case 'Meta+g': {
+        event.preventDefault();
+        const { currentComponent } = state;
+        // if (currentComponent) {
+        //   event.preventDefault();
+        //   setState({ copyComponent: currentComponent })
+        // };
         break;
       }
     }
