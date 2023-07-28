@@ -13,6 +13,11 @@
   z-index: 6;
 
   animation: dragMoveContainer 0.2s 1 ease-in;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .drag-move-header-container {
   width: 100%;

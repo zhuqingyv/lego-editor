@@ -9,17 +9,25 @@ const setMaterial = (material: any) => {
 };
 
 const ComponentStore = ({ children }:any) => {
-  const [state] = useSignal('app');
+  const [state, setState] = useSignal('app');
 
-  const { material: materialObject } = state;
+  const { material: materialObject, isDev } = state;
   const material = setMaterial(materialObject);
+
+  const onClick = (item: any, event: any) => {
+    event.preventDefault();
+    const { isDev } = state;
+    if (isDev) {
+      setState({ currentMaterial: item });
+    };
+  };
 
   return (
     <div className="ComponentStore-container">
       <div style={{ flex: 1 }}>
         <div className='ComponentStore-list-container'>
           {
-            material.map((item, index) => <DragAble key={`component_store_${item.name}`} item={item} index={index} />)
+            material.map((item, index) => <DragAble key={`component_store_${item.name}`} item={item} index={index} onClick={onClick} />)
           }
         </div>
       </div>

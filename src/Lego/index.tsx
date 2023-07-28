@@ -23,10 +23,14 @@ import scriptLoader from '../ScriptLoader';
 import service from '@service';
 // @ts-ignore
 import { safeParse } from 'lib';
+
 import './style.css';
 
 const loadLib = async() => {
-  return await Promise.all([scriptLoader('https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'), scriptLoader('https://unpkg.com/babel-standalone@6/babel.min.js')]);
+  return await Promise.all([
+    scriptLoader('https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js'),
+    scriptLoader('https://unpkg.com/babel-standalone@6/babel.min.js')
+  ]);
 };
 
 const loadLibPromise = loadLib();
@@ -35,16 +39,18 @@ service('userInfo');
 
 const [_, setState] = createSignal('app', {
   dsl: [],
-  // 当前选中的组件
-  currentComponent: null,
   // 物料
   material: [],
   // 标记页面加载状态
   status: 0,
   // 后面做dev功能
   isDev: false,
+  // 当前选中的组件
+  currentComponent: null,
   // 用于复制粘贴
-  copyComponent: null
+  copyComponent: null,
+  // 当前选中的物料
+  currentMaterial: null
 }, 'key', false);
 
 const Lego = () => {

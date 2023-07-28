@@ -78,7 +78,7 @@ const ComponentEditor = (props: any) => {
       <div className='drag-move-header-container' ref={header}>
         { !!(title) && <div className='drag-move-header-title'>{ title }</div> }
       </div>
-      <div>
+      <div style={{ flex: 1, width: '100%', overflow: 'hidden' }}>
         { children }
       </div>
     </div>

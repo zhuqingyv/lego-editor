@@ -14,7 +14,7 @@ const store:StoreType = {
   }
 }
 
-const scriptLoader = async(url: string = '') => {
+const scriptLoader = async(url: string = '', type?: string) => {
   if (store.find(url)) return Promise.resolve();
   store.add(url);
   return new Promise((resolve, reject) => {
@@ -23,6 +23,7 @@ const scriptLoader = async(url: string = '') => {
     script.src = url;
     script.onload = resolve;
     script.onerror = reject;
+    if (type) script.setAttribute('type', type);
     document.body.appendChild(script);
   });
 };

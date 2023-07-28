@@ -31,6 +31,11 @@ type ComponentModel = {
   name: string;
   icon?: string;
   editorView?: any;
+  editorViewCode?: string;
+  editorViewTransformCode?: string;
+  schema?: string;
+  schemaCode?: string;
+  cssCode?: string;
 };
 
 const codeCache = new Map();
@@ -61,15 +66,19 @@ const componentLoader = (component: ComponentType) => {
         const { icon, editorView } = eval(code) || {};
         componentModel.icon = icon;
         componentModel.editorView = () => editorView;
+        componentModel.editorViewCode = contentValue;
+        componentModel.editorViewTransformCode = code;
         break;
       }
       case AssetName.SCHEMA: {
         const schema = safeParse(contentValue, {});
         componentModel.schema = schema;
+        componentModel.schemaCode = contentValue;
         break;
       }
       case AssetName.CSS: {
         AsyncCssBuilder(contentValue);
+        componentModel.cssCode = contentValue;
         break;
       }
       default: break;

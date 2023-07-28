@@ -28,7 +28,7 @@ const Editor = () => {
     const findLoop = (list: any) => {
       return list.find((item: any, i: number) => {
         const isQualId = item.id === id;
-  
+
         if (isQualId) {
           result = item;
           if (ifDelete) list.splice(i, 1);
@@ -40,7 +40,7 @@ const Editor = () => {
       });
     };
     findLoop(state.dsl);
-  
+
     return result
   };
 
@@ -79,16 +79,16 @@ const Editor = () => {
 
   return (
     <>
-      <DropAble>
-        <div className="editor-container" onClick={onClick}>
+      <div className="editor-container" onClick={onClick}>
+        <DropAble>
           <div className='editor-preview'>
             <Engine />
           </div>
-          <div style={{ flex: 1 }}></div>
-          {/* <TimeLine /> */}
-          <RectInspect />
-        </div>
-      </DropAble>
+        </DropAble>
+        <div style={{ flex: 1 }}></div>
+        {/* <TimeLine /> */}
+        <RectInspect />
+      </div>
     </>
   );
 };

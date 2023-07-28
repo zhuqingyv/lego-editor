@@ -110,6 +110,14 @@ export const HotKey = () => {
       }
       // 保存元素
       case 'Meta+s': {
+        const { isDev, currentMaterial } = state;
+
+        // 当开启dev，并且正在编辑某一个组件时
+        if (isDev && currentMaterial) {
+          alert('编辑组件!');
+          return;
+        };
+
         events.emit(EVENTS.SAVE);
         event.preventDefault();
         break;

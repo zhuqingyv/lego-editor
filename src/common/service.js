@@ -59,6 +59,11 @@ const config = {
     const path = isDev ? 'src-dev/components' : 'src/components';
     return gitLabService.reduceFolderFile(path, callback);
   },
+
+  // 设置组件
+  'setComponent': async({ name, type, value, isDev } = {}) => {
+    const path = isDev ? 'src-dev/components' : 'src/components';
+  }
 };
 
 
