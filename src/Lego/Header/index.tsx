@@ -20,7 +20,6 @@ import AddComponentButton from './AddComponentButton';
 // @ts-ignore
 import SaveButton from './SaveButton';
 import QRCode from 'qrcode-generator';
-import { setState as setComponentEditor } from '../base/ComponentEditor';
 
 import './style.css';
 
@@ -56,7 +55,6 @@ const DevChangeButton = memo(() => {
   const [isDev, setState] = useSignal('app', 'isDev');
   const onChange = async(boolean: boolean) => {
     await setState(boolean);
-    setComponentEditor({ show: boolean });
   };
   return (
     <Switch

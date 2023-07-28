@@ -3,6 +3,7 @@ import { events } from 'events';
 import { EVENTS } from 'const';
 import { creator } from 'creator';
 import { useSignal } from 'react-use-signal';
+import { toast, TypeEnum } from 'toast'
 
 class HotKeyCore {
   event = null;
@@ -100,16 +101,23 @@ export const HotKey = () => {
 
   const hotKeyCallback = async({ value, event }) => {
     switch(value) {
+      // 删除元素
       case 'Meta+Backspace': {
+        const { isDev } = state;
+        if (!isDev) return toast('只有开发环境才允许「删除」元素!', TypeEnum.FAIL);
         events.emit(EVENTS.DELETE_COMPONENT_INSTANCE);
         break;
       }
+      // 保存元素
       case 'Meta+s': {
         events.emit(EVENTS.SAVE);
         event.preventDefault();
         break;
       }
+      // 复制元素
       case 'Meta+c': {
+        const { isDev } = state;
+        if (!isDev) return toast('只有开发环境才允许「复制」元素!', TypeEnum.FAIL);
         const { currentComponent } = state;
         if (currentComponent) {
           event.preventDefault();
@@ -117,9 +125,11 @@ export const HotKey = () => {
         };
         break;
       }
+      // 粘贴元素
       case 'Meta+v': {
-        const { copyComponent } = state;
-        if (copyComponent) {
+        const { copyComponent, isDev } = state;
+        if (!isDev) return toast('只有开发环境才允许「粘贴」元素!', TypeEnum.FAIL);
+        if (copyComponent) { 
           const componentInstance = buildComponentInstance(copyComponent);
           event.preventDefault();
           await addComponent(componentInstance);
@@ -127,6 +137,7 @@ export const HotKey = () => {
         };
         break;
       }
+      // 打包组
       case 'Meta+g': {
         event.preventDefault();
         const { currentComponent } = state;

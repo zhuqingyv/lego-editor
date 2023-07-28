@@ -14,9 +14,9 @@ import ComponentStore from './ComponentStore';
 // @ts-ignore
 import { creator } from 'creator';
 import componentLoader from './base/ComponentLoader';
-import ComponentEditor from './base/ComponentEditor';
 import Props from './Props';
 import Tree from './Tree';
+import ComponentEditor from './ComponentEditor';
 // @ts-ignore
 import scriptLoader from '../ScriptLoader';
 // @ts-ignore
