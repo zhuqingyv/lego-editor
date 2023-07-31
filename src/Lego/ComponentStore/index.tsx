@@ -11,6 +11,7 @@ const setMaterial = (material: any) => {
 const ComponentStore = ({ children }:any) => {
   const [isDev] = useSignal('app', 'isDev');
   const [materialObject] = useSignal('app', 'material');
+  const [allTemplate = []] = useSignal('app', 'allTemplate');
   const [_, setState] = useSignal('app', );
 
   const material = setMaterial(materialObject);
@@ -42,7 +43,19 @@ const ComponentStore = ({ children }:any) => {
             })
           }
           {/* 模版组件 */}
-
+          {
+            (!!allTemplate?.length) && allTemplate.map((template: any = {}, index: number) => {
+              const { id, dsl, name, path, type } = template;
+              return (
+                <DragAble
+                  key={`component_store_template_${name}`}
+                  data-component={JSON.stringify({ dsl, name, id, path, type })}
+                  item={template}
+                  index={index}
+                />
+              );
+            })
+          }
         </div>
       </div>
       { children }

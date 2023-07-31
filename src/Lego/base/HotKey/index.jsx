@@ -4,6 +4,7 @@ import { EVENTS } from 'const';
 import { creator } from 'creator';
 import { useSignal } from 'react-use-signal';
 import { toast, TypeEnum } from 'toast'
+import { zipDSL } from 'lib';
 
 class HotKeyCore {
   event = null;
@@ -82,6 +83,7 @@ const hotKey = new HotKeys(
 
 export const HotKey = () => {
   const [state, setState] = useSignal('app');
+  const [templateCreatorState] = useSignal('template-creator');
 
   const buildComponentInstance = (component) => {
     const componentInstance = creator.build({ name: component.name });
@@ -124,9 +126,8 @@ export const HotKey = () => {
       }
       // 复制元素
       case 'Meta+c': {
-        const { isDev } = state;
+        const { isDev, currentComponent } = state;
         if (!isDev) return toast('只有开发环境才允许「复制」元素!', TypeEnum.FAIL);
-        const { currentComponent } = state;
         if (currentComponent) {
           event.preventDefault();
           setState({ copyComponent: currentComponent })
@@ -148,11 +149,14 @@ export const HotKey = () => {
       // 打包组
       case 'Meta+g': {
         event.preventDefault();
-        const { currentComponent } = state;
-        // if (currentComponent) {
-        //   event.preventDefault();
-        //   setState({ copyComponent: currentComponent })
-        // };
+        const { currentComponent, isDev } = state;
+        if (!isDev) return toast('只有开发环境才允许「新增」模版!', TypeEnum.FAIL);
+        if (currentComponent) {
+          event.preventDefault();
+          const { setShow } = templateCreatorState;
+          const dsl = zipDSL([currentComponent]);
+          setShow({ dsl, show: true });
+        };
         break;
       }
     }

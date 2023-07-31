@@ -1,10 +1,7 @@
 import { useRef } from 'react';
 import ReactAce from 'react-ace';
-// @ts-ignore
-import { useSignal } from 'react-use-signal';
 
-const CssEditor = ({ onChange }: any) => {
-  const [currentMaterial] = useSignal('app', 'currentMaterial');
+const CssEditor = ({ onChange, currentMaterial }: any) => {
   const timer = useRef() as any;
   const { cssCode } = currentMaterial;
 

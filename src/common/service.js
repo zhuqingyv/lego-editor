@@ -63,6 +63,29 @@ const config = {
   // 设置组件
   'setComponent': async({ name, type, value, isDev } = {}) => {
     const path = isDev ? 'src-dev/components' : 'src/components';
+  },
+
+  // 新增模版
+  'createTemplate': async({ isDev, name, dsl = [], icon = 'https://picasso-static.xiaohongshu.com/fe-platform/a91e4d0f2e1701115bd59839b5b634cd4f3ea3cc.png' }) => {
+    const basePath = isDev ? 'src-dev/template' : 'src/template';
+    const id = uuid();
+    const template = {
+      id,
+      name,
+      dsl,
+      rnVersion: 'dev',
+      icon,
+      status: -1
+    };
+    return gitLabService
+      .createJsonFile(`${basePath}/${id}.json`, JSON.stringify(template, null, 2))
+      .then((res) => res);
+  },
+
+  // 所有的模版
+  'allTemplate': async(callback = () => null, isDev = false) => {
+    const path = isDev ? 'src-dev/template' : 'src/template';
+    return gitLabService.reduceFolderFile(path, callback);
   }
 };
 

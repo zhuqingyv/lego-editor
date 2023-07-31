@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import Lottie from 'lottie-react';
+import { useEffect } from 'react';
 import './InjectModel';
 import { useParams } from 'react-router-dom'
 // @ts-ignore
@@ -17,6 +16,7 @@ import componentLoader from './base/ComponentLoader';
 import Props from './Props';
 import Tree from './Tree';
 import ComponentEditor from './ComponentEditor';
+import TemplateCreator from './TemplateCreator';
 // @ts-ignore
 import scriptLoader from '../ScriptLoader';
 // @ts-ignore
@@ -41,10 +41,12 @@ const [_, setState] = createSignal('app', {
   dsl: [],
   // 物料
   material: [],
+  // 模版
+  allTemplate: [],
   // 标记页面加载状态
   status: 0,
   // 后面做dev功能
-  isDev: false,
+  isDev: true,
   // 当前选中的组件
   currentComponent: null,
   // 用于复制粘贴
@@ -57,6 +59,7 @@ const Lego = () => {
   const { pageId } = useParams();
 
   useEffect(() => {
+    // 获取组件
     service('components', ({ type, progress, all }: any) => {
       toast(`${type}: ${((progress / all) * 100).toFixed(1)}%`, TypeEnum.LOADING)
     }).then(async(res: any[]) => {
@@ -70,6 +73,8 @@ const Lego = () => {
       setState({ material });
       toast('组件 加载成功!', TypeEnum.SUCCESS);
     });
+
+    // 获取页面信息
     service('pageInfo', pageId).then((res: any) => {
       const page = safeParse(res, null);
       if (page) {
@@ -78,6 +83,18 @@ const Lego = () => {
         toast('DSL 加载成功!', TypeEnum.SUCCESS);
       };
     });
+
+    // 获取所有模版
+    service('allTemplate')
+      .then(async(templateList = []) => {
+        const allTemplate = templateList.map(({ path, type, contentValue }) => {
+          const value = JSON.parse(contentValue);
+          const { dsl = '{}', id, name, icon } = value;
+          return { id, name, path, dsl: JSON.parse(dsl), icon, type: 'template' };
+        });
+
+        setState({ allTemplate });
+      });
   }, [])
 
   return (
@@ -95,6 +112,7 @@ const Lego = () => {
       <HotKey />
       <ToastContainer />
       <ComponentEditor />
+      <TemplateCreator />
     </>
   );
 };

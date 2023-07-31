@@ -1,0 +1,11 @@
+.template-creator-container {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+
+  display: flex;
+  flex-direction: row;
+}
+.template-creator-half-container {
+  flex: 1
+}

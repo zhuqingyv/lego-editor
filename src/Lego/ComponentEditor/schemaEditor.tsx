@@ -1,8 +1,6 @@
 import ReactAce from 'react-ace';
-import { useSignal } from 'react-use-signal';
 
-const SchemaEditor = ({ onChange }: any) => {
-  const [currentMaterial] = useSignal('app', 'currentMaterial');
+const SchemaEditor = ({ onChange, currentMaterial }: any) => {
   const { schemaCode } = currentMaterial;
 
   const _onChange = (newCode: string) => {

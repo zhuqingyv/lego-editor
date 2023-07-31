@@ -14,7 +14,7 @@ const mouseInfo = {
 };
 
 const ComponentEditor = (props: any) => {
-  const { show = false, children = null, title = '' } = props;
+  const { show = false, children = null, title = '', onClose = () => null } = props;
   const [state, setState] = useState(mouseInfo);
 
   const header = useRef() as any;
@@ -77,6 +77,7 @@ const ComponentEditor = (props: any) => {
       }}>
       <div className='drag-move-header-container' ref={header}>
         { !!(title) && <div className='drag-move-header-title'>{ title }</div> }
+        <img src='https://picasso-static.xiaohongshu.com/fe-platform/631afc566794af19239d3169f6d6cab45f60114e.png' onClick={onClose} />
       </div>
       <div style={{ flex: 1, width: '100%', overflow: 'hidden' }}>
         { children }

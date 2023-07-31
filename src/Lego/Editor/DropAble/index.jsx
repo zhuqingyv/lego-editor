@@ -1,9 +1,27 @@
 import { cloneElement, useState } from 'react';
 import { creator } from 'creator';
 import { useSignal } from 'react-use-signal';
+import uuid from 'react-uuid'
 
 import SchemaDefaultValueGetter from '../SchemaGetter';
 import './style.css';
+
+const forEachUuid = (oldDSL = []) => {
+  const loop = (array = []) => {
+    array.forEach((item) => {
+      const id = uuid();
+      const { children = [] } = item;
+      item.id = id;
+
+      if (children?.length) {
+        loop(children);
+      };
+    })
+  };
+
+  loop(oldDSL);
+  return oldDSL;
+};
 
 const DropAble = ({ children, target, onDrop }) => {
   const [newComponentInstance, setNewComponentInstance] = useState(null);
@@ -13,14 +31,31 @@ const DropAble = ({ children, target, onDrop }) => {
   const currentComponent = target || current;
 
   const buildComponentInstance = (component) => {
-    return creator.build({ name: component.name });
+    const {type} = component;
+    switch(type) {
+      case 'template': {
+        const { dsl = [] } = component;
+        const newDSL = forEachUuid(dsl);
+        return newDSL;
+      }
+      default: {
+        return creator.build({ name: component.name });
+      }
+    }
   };
 
   const addComponent = (component) => {
+    const push = (target) => {
+      if (component instanceof Array) {
+        target.push(...component);
+      } else {
+        target.push(component);
+      }
+    };
     if (currentComponent) {
-      currentComponent.children.push(component);
+      push(currentComponent.children);
     } else {
-      dsl.push(component);
+      push(dsl);
     };
     setState({ dsl });
     return component;

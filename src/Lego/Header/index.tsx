@@ -11,7 +11,6 @@ import QRCodeView from 'qrcode.react';
 import AddComponentButton from './AddComponentButton';
 // @ts-ignore
 import SaveButton from './SaveButton';
-import QRCode from 'qrcode-generator';
 
 import './style.css';
 
@@ -22,6 +21,9 @@ const Preview = memo(() => {
 
   // 压缩
   const stringZip = compressToBase64(JSON.stringify({ id, dsl }));
+  const valueDSL = `xhsdiscover://rn/lancer-slim/box?id=${id}&dsl=${stringZip}`;
+
+  const value = valueDSL.length >= 1600 ? `xhsdiscover://rn/lancer-slim/box?id=${id}` : valueDSL;
 
   if (!show) return null;
 
@@ -30,13 +32,12 @@ const Preview = memo(() => {
       <div className='header-QR-button-container'>
         <img className='header-QR-button' src="https://picasso-static.xiaohongshu.com/fe-platform/aa2e0ae046093ea740259c10bd4bebd6257233fc.png" />
         <div className='header-QR'>
-          {/* <QRCodeView
-            value={`xhsdiscover://rn/lancer-slim/box?id=${id}&dsl=${stringZip}`}
+          <QRCodeView
+            value={value}
             renderAs='svg'
             size={200}
-            onError={onError}
             max={100}
-          /> */}
+          />
         </div>
       </div>
     </div>

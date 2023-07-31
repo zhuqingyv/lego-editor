@@ -1,11 +1,9 @@
 import ReactAce from 'react-ace';
-import { useSignal } from 'react-use-signal';
 
-const JsxEditor = ({ onChange }) => {
-  const [currentMaterial] = useSignal('app', 'currentMaterial');
+const JsxEditor = ({ onChange, currentMaterial }:any) => {
   const { editorViewCode } = currentMaterial;
 
-  const _onChange = (newCode) => {
+  const _onChange = (newCode: string) => {
     onChange({ type: 'jsx', value: newCode });
   };
 
