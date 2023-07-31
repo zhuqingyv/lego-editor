@@ -1,15 +1,7 @@
 import { memo, useState } from 'react';
 import {
   compressToBase64,
-  decompressFromBase64,
-
-  compressToEncodedURIComponent,
-  decompressFromEncodedURIComponent,
-
-  compressToUTF16,
-  decompressFromUTF16
 } from 'lz-string';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
 import { Link } from 'react-router-dom';
@@ -74,7 +66,7 @@ const HeaderView = memo(() => {
         <img src="https://picasso-static.xiaohongshu.com/fe-platform/a91e4d0f2e1701115bd59839b5b634cd4f3ea3cc.png" className='header-view-logo' />
       </Link>
       <Preview />
-      <AddComponentButton />
+      {/* <AddComponentButton /> */}
       <DevChangeButton />
       <SaveButton />
     </div>

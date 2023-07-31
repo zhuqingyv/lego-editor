@@ -110,6 +110,7 @@ export const HotKey = () => {
       }
       // 保存元素
       case 'Meta+s': {
+        event.preventDefault();
         const { isDev, currentMaterial } = state;
 
         // 当开启dev，并且正在编辑某一个组件时
@@ -119,7 +120,6 @@ export const HotKey = () => {
         };
 
         events.emit(EVENTS.SAVE);
-        event.preventDefault();
         break;
       }
       // 复制元素

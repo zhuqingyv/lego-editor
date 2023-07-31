@@ -9,14 +9,14 @@ const setMaterial = (material: any) => {
 };
 
 const ComponentStore = ({ children }:any) => {
-  const [state, setState] = useSignal('app');
+  const [isDev] = useSignal('app', 'isDev');
+  const [materialObject] = useSignal('app', 'material');
+  const [_, setState] = useSignal('app', );
 
-  const { material: materialObject, isDev } = state;
   const material = setMaterial(materialObject);
 
   const onClick = (item: any, event: any) => {
     event.preventDefault();
-    const { isDev } = state;
     if (isDev) {
       setState({ currentMaterial: item });
     };
@@ -26,9 +26,23 @@ const ComponentStore = ({ children }:any) => {
     <div className="ComponentStore-container">
       <div style={{ flex: 1 }}>
         <div className='ComponentStore-list-container'>
+          {/* 基础组件 */}
           {
-            material.map((item, index) => <DragAble key={`component_store_${item.name}`} item={item} index={index} onClick={onClick} />)
+            !!isDev && material.map((item, index) => {
+              const { schema, name, id } = item;
+              return (
+                <DragAble
+                  key={`component_store_${item.name}`}
+                  data-component={JSON.stringify({ schema, name, id })}
+                  item={item}
+                  index={index}
+                  onClick={onClick}
+                />
+              )
+            })
           }
+          {/* 模版组件 */}
+
         </div>
       </div>
       { children }

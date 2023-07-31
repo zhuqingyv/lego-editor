@@ -7,6 +7,9 @@
   padding-top: 6px;
   padding-left: 4px;
 }
+.tree-container div{
+  margin-right: 8px;
+}
 
 .tree-item-container {
   display: flex;
@@ -25,10 +28,20 @@
   padding-bottom: 8px;
   margin-left: 10px;
   background-color: rgba(0,0,0,0.05);
+  margin-bottom: 1px;
 }
 .tree-item-container img {
-  width: 10px;
-  height: 10px;
+  transition: all 0.3s;
+}
+.tree-item-container img:nth-child(1) {
+  width: 8px;
+  height: 8px;
+  object-fit: contain;
+  margin-right: 6px;
+}
+.tree-item-container img:nth-child(2) {
+  width: 12px;
+  height: 12px;
   object-fit: contain;
   margin-right: 6px;
 }
@@ -53,11 +66,26 @@
   background-color: white;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
+  margin-bottom: 1px;
 }
 
 .tree-item-container-active img {
   width: 10px;
   height: 10px;
+  object-fit: contain;
+  margin-right: 6px;
+  transition: all 0.3s;
+}
+
+.tree-item-container-active img:nth-child(1) {
+  width: 8px;
+  height: 8px;
+  object-fit: contain;
+  margin-right: 6px;
+}
+.tree-item-container-active img:nth-child(2) {
+  width: 12px;
+  height: 12px;
   object-fit: contain;
   margin-right: 6px;
 }
