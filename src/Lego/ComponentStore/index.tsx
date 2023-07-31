@@ -2,6 +2,9 @@
 import DragAble from './DragAble';
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
+import { toast, TypeEnum } from '../Toast';
+// @ts-ignore
+import service from '@service';
 import './style.css';
 
 const setMaterial = (material: any) => {
@@ -20,6 +23,15 @@ const ComponentStore = ({ children }:any) => {
     event.preventDefault();
     if (isDev) {
       setState({ currentMaterial: item });
+    };
+  };
+
+  const onDeleteTemplate = async(event: any) => {
+    if (confirm('确定要删除么?')) {
+      const { item } = event;
+      const { id } = item;
+      await service('deleteTemplate', { id }).then(() => toast('删除成功!', TypeEnum.SUCCESS));
+      window.location.reload();
     };
   };
 
@@ -52,6 +64,7 @@ const ComponentStore = ({ children }:any) => {
                   data-component={JSON.stringify({ dsl, name, id, path, type })}
                   item={template}
                   index={index}
+                  onDelete={onDeleteTemplate}
                 />
               );
             })

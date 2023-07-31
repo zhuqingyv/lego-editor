@@ -24,9 +24,10 @@ const TemplateCreator = () => {
     setState({ show: false, dsl: [], name: '', icon: '' });
   };
 
-  const onChange = (value) => {
+  const onChange = async(value: any) => {
     const { icon, name } = value;
-    service('createTemplate', { icon, name, dsl: JSON.stringify(dsl) });
+    await service('createTemplate', { icon, name, dsl: JSON.stringify(dsl) });
+    window.location.reload();
   };
 
   useEffect(() => {

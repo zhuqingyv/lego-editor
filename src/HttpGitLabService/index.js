@@ -1,19 +1,13 @@
 import axios from 'axios';
 
-// const apiUrl = 'https://code.devops.xiaohongshu.com/api/v4';
-// const projectId = '32879'; // 替换为你的项目ID
-// const filePath = 'data.json'; // 替换为你的JSON文件路径
-// const accessToken = 'ifQP5tyyi2DYvVfVhsq-';
-// const branch = 'feat-base';
-
 function decodeBase64String(base64String) {
   const binaryString = window.atob(base64String);
   const bytes = new Uint8Array(binaryString.length);
-  
+
   for (let i = 0; i < binaryString.length; i++) {
     bytes[i] = binaryString.charCodeAt(i);
   }
-  
+
   const decoder = new TextDecoder("utf-8");
   return decoder.decode(bytes);
 }
@@ -55,7 +49,7 @@ class HttpGitLabService {
   writeFile = async (filePath, fileString) => {
     const { apiUrl, projectId, branch, accessToken } = this;
     await axios.put(`${apiUrl}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}`, {
-      branch: branch,
+      branch,
       content: fileString,
       commit_message: `${new Date().toLocaleTimeString()}`
     }, {
@@ -63,6 +57,22 @@ class HttpGitLabService {
         'PRIVATE-TOKEN': accessToken
       }
     });
+  };
+
+  // 删除文件
+  deleteFile = async (filePath = '') => {
+    const { apiUrl, projectId, accessToken, branch } = this;
+    return axios({
+      method: 'DELETE',
+      url: `${apiUrl}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}`,
+      headers: {
+        'PRIVATE-TOKEN': accessToken
+      },
+      data: {
+        branch,
+        commit_message: 'Delete File'
+      }
+    })
   };
 
   // 获取文件夹下所有文件
@@ -77,13 +87,13 @@ class HttpGitLabService {
       }
     })
       .then(async (response) => {
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
           const fileList = response.data || [];
           const promiseAll = [];
           const result = [];
           let progress = 0;
 
-          for(let i = 0;i < fileList?.length;i++) {
+          for (let i = 0; i < fileList?.length; i++) {
             const file = fileList[i]
             const { type, path, name } = file;
 
@@ -108,7 +118,7 @@ class HttpGitLabService {
               });
               promiseAll.push(promise);
               const children = await promise;
-              result.push({ path, name, type, children});
+              result.push({ path, name, type, children });
               continue;
             };
           };
@@ -132,11 +142,11 @@ class HttpGitLabService {
       content,
       commit_message: 'Create file'
     },
-    {
-      headers: {
-        'PRIVATE-TOKEN': accessToken
-      }
-    });
+      {
+        headers: {
+          'PRIVATE-TOKEN': accessToken
+        }
+      });
   };
 };
 

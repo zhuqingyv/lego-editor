@@ -1,16 +1,28 @@
 .drag-able-container {
   width: 80px;
   background-color: #fafafa;
-  cursor: pointer;
   transition: all 0.3s;
   border-radius: 4px;
   margin-right: 12px;
   margin-bottom: 12px;
   border: 0.5px solid rgba(0,0,0,0.1);
   overflow: hidden;
+  position: relative;
 }
 .drag-able-container:hover {
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.drag-able-container > img:nth-child(1) {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.drag-able-container > img:nth-child(1):hover {
+  transform: scale(1.2);
 }
 .drag-able-icon-container {
   width: 80px;

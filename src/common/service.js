@@ -82,6 +82,12 @@ const config = {
       .then((res) => res);
   },
 
+  // 删除模版
+  'deleteTemplate': async({ id, isDev }) => {
+    const basePath = isDev ? 'src-dev/template' : 'src/template';
+    return gitLabService.deleteFile(`${basePath}/${id}.json`)
+  },
+
   // 所有的模版
   'allTemplate': async(callback = () => null, isDev = false) => {
     const path = isDev ? 'src-dev/template' : 'src/template';
