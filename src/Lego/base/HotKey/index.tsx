@@ -113,13 +113,13 @@ export const HotKey = () => {
       // 保存元素
       case 'Meta+s': {
         event.preventDefault();
-        const { isDev, currentMaterial } = state;
+        // const { isDev, currentMaterial } = state;
 
         // 当开启dev，并且正在编辑某一个组件时
-        if (isDev && currentMaterial) {
-          alert('编辑组件!');
-          return;
-        };
+        // if (isDev && currentMaterial) {
+        //   alert('编辑组件!');
+        //   return;
+        // };
 
         events.emit(EVENTS.SAVE);
         break;
@@ -154,8 +154,15 @@ export const HotKey = () => {
         if (currentComponent) {
           event.preventDefault();
           const { setShow } = templateCreatorState;
-          const dsl = zipDSL([currentComponent]);
-          setShow({ dsl, show: true });
+          const { onScreenShot } = state;
+          if (onScreenShot) {
+            const icon = await onScreenShot();
+            const dsl = zipDSL([currentComponent]);
+            setShow({ dsl, show: true, icon });
+          } else {
+            const dsl = zipDSL([currentComponent]);
+            setShow({ dsl, show: true });
+          };
         };
         break;
       }

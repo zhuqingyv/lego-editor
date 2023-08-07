@@ -11,9 +11,12 @@ import Engine from './Engine';
 // @ts-ignore
 import DropAble from './DropAble';
 import RectInspect from './RectInspect';
+import update from './Update';
 import TimeLine from './TimeLine';
 // @ts-ignore
 import service from '@service';
+// @ts-ignore
+import { safeParse } from 'lib';
 import './style.css';
 
 const Editor = () => {
@@ -23,15 +26,15 @@ const Editor = () => {
     setState({ currentComponent: null });
   };
 
-  const findDSLInstance = ({ id, ifDelete = false }: any) => {
+  const findDSLInstance = ({ id, ifDelete = false }: any, callback: (param:{list:[], item: any, i: number}) => any ) => {
     let result;
     const findLoop = (list: any) => {
       return list.find((item: any, i: number) => {
         const isQualId = item.id === id;
-
         if (isQualId) {
           result = item;
           if (ifDelete) list.splice(i, 1);
+          callback({ list, item, i });
           return true;
         }
         if (item?.children?.length) {
@@ -44,27 +47,41 @@ const Editor = () => {
     return result
   };
 
+  const updateComponentInstance = async({ id }: { id: string }) => {
+    if (id === '#') {
+      await setState({ dsl: safeParse(JSON.stringify(state.dsl), {}) });
+      await service('setPage', state);
+      toast('更新成功!', TypeEnum.SUCCESS);
+      return;
+    };
+
+    const updater = update.find(id);
+    if (updater) {
+      updater(() => async() => {
+        await service('setPage', state);
+        toast('更新成功!', TypeEnum.SUCCESS);
+      });
+    };
+  };
+
   const updateComponentSchemaValue = useCallback(({ id, value }: any) => {
     if (state.status < 1) return;
-    const dslInstance = findDSLInstance({ id });
-    if (dslInstance) {
+    findDSLInstance({ id }, ({item}) => {
       // @ts-ignore
-      if (JSON.stringify(dslInstance.schemaValue) === JSON.stringify(value)) return;
-      // @ts-ignore
-      dslInstance.schemaValue = value;
-      setState({ dsl: state.dsl })
-        .then(() => {
-          toast('更新成功!', TypeEnum.SUCCESS);
-          service('setPage', state);
-        })
-    };
+      if (JSON.stringify(item.schemaValue) === JSON.stringify(value)) return;
+      item.schemaValue = value;
+      updateComponentInstance({ id: item.id });
+    });
   }, []);
 
   const onDeleteComponentInstance = () => {
     if (state.status < 1) return;
     if (state.currentComponent) {
-      findDSLInstance({ id: state?.currentComponent?.id, ifDelete: true });
-      setState({ currentComponent: null, dsl: state.dsl });
+      findDSLInstance({ id: state?.currentComponent?.id, ifDelete: true }, async() => {
+        await setState({ currentComponent: null, dsl: state.dsl });
+        await service('setPage', state);
+        toast('更新成功!', TypeEnum.SUCCESS);
+      });
     }
   };
 
@@ -80,7 +97,7 @@ const Editor = () => {
   return (
     <>
       <div className="editor-container" onClick={onClick}>
-        <DropAble>
+        <DropAble onAddComponent={updateComponentInstance} findDSLInstance={findDSLInstance}>
           <div className='editor-preview'>
             <Engine />
           </div>

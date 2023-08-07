@@ -2,24 +2,32 @@
   width: 400px;
   height: 100%;
   background-color: #fafafa;
-  padding: 12px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow-y: scroll;
   overflow-x: hidden;
+  max-height: 913px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
 }
 
-.ComponentStore-list-container {
-  width: 100%;
+.ComponentStore-container > div:nth-child(1)::-webkit-scrollbar {
+  display: none;
+}
+
+.ComponentStore-title {
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
   background-color: #fafafa;
+  padding-bottom: 4px;
+  box-shadow: 0 6px 6px rgba(0,0,0,0.1);
+  padding-top: 6px;
+  padding-left: 6px;
   box-sizing: border-box;
-
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-
-  flex-wrap: wrap;
 }

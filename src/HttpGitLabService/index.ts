@@ -1,6 +1,7 @@
 import axios from 'axios';
+import './GitLabAPICache';
 
-function decodeBase64String(base64String) {
+function decodeBase64String(base64String: string) {
   const binaryString = window.atob(base64String);
   const bytes = new Uint8Array(binaryString.length);
 
@@ -12,8 +13,27 @@ function decodeBase64String(base64String) {
   return decoder.decode(bytes);
 }
 
+interface OptionsType {
+  apiUrl: string;
+  projectId: string;
+  accessToken: string;
+  branch: string;
+};
+
+const defaultOptions = {
+  apiUrl: '',
+  projectId: '',
+  accessToken: '',
+  branch: ''
+};
+
 class HttpGitLabService {
-  constructor(options = {}) {
+  apiUrl: string;
+  projectId: string;
+  accessToken: string;
+  branch: string;
+
+  constructor(options:OptionsType = defaultOptions) {
     const {
       apiUrl = 'https://code.devops.xiaohongshu.com/api/v4',
       projectId,
@@ -28,7 +48,7 @@ class HttpGitLabService {
   };
 
   // 读文件
-  readFile = async (filePath, callback = () => null) => {
+  readFile = async (filePath: string, callback:any = () => null) => {
     const { apiUrl, projectId, accessToken, branch } = this;
     return axios.get(`${apiUrl}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}`, {
       headers: {
@@ -46,7 +66,7 @@ class HttpGitLabService {
   };
 
   // 写文件
-  writeFile = async (filePath, fileString) => {
+  writeFile = async (filePath: string, fileString: string) => {
     const { apiUrl, projectId, branch, accessToken } = this;
     await axios.put(`${apiUrl}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}`, {
       branch,
@@ -76,7 +96,7 @@ class HttpGitLabService {
   };
 
   // 获取文件夹下所有文件
-  reduceFolderFile = async (path = '', callback = () => null) => {
+  reduceFolderFile = async (path = '', callback:any = () => null) => {
     const { apiUrl, projectId, branch, accessToken } = this;
     return axios.get(`${apiUrl}/projects/${projectId}/repository/tree?path=${path}`, {
       headers: {
@@ -90,7 +110,7 @@ class HttpGitLabService {
         return new Promise(async (resolve, reject) => {
           const fileList = response.data || [];
           const promiseAll = [];
-          const result = [];
+          const result:any[] = [];
           let progress = 0;
 
           for (let i = 0; i < fileList?.length; i++) {
@@ -134,6 +154,7 @@ class HttpGitLabService {
       })
   };
 
+  // 新增json文件
   createJsonFile = async (path = '', content = '') => {
     //`https://gitlab.com/api/v4/projects/${projectId}/repository/files`;
     const { apiUrl, projectId, branch, accessToken } = this;

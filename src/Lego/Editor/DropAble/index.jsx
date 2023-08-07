@@ -23,7 +23,7 @@ const forEachUuid = (oldDSL = []) => {
   return oldDSL;
 };
 
-const DropAble = ({ children, target, onDrop }) => {
+const DropAble = ({ children, target, onDrop, onAddComponent, findDSLInstance }) => {
   const [newComponentInstance, setNewComponentInstance] = useState(null);
   const [state, setState] = useSignal('app');
 
@@ -53,11 +53,14 @@ const DropAble = ({ children, target, onDrop }) => {
       }
     };
     if (currentComponent) {
-      push(currentComponent.children);
+      findDSLInstance({ id: currentComponent.id }, ({ item }) => {
+        if (item) push(item.children);
+      });
     } else {
       push(dsl);
     };
-    setState({ dsl });
+    if (onAddComponent) onAddComponent({ id: '#' });
+    
     return component;
   };
 

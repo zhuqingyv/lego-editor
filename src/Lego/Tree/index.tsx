@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSignal } from 'react-use-signal';
 import './style.css';
 
-const TreeItem = ({item, onClick, index, current}: any) => {
+const TreeItem = ({ item, onClick, index, current }: any) => {
   const [open, setOpen] = useState(true);
   const [state] = useSignal('app');
   const { material } = state;
@@ -21,15 +21,15 @@ const TreeItem = ({item, onClick, index, current}: any) => {
   return (
     <>
       <div className={`${isCurrent ? 'tree-item-container-active' : 'tree-item-container'}`} style={{ marginLeft: `${index * 12}px` }} onClick={() => onClick(item)}>
-        { (!!hasIcon) && <img
+        {(!!hasIcon) && <img
           src="https://picasso-static.xiaohongshu.com/fe-platform/897d21562d1ebaa53e17cd128ff50ef45ec9e508.png"
           onClick={onOpen}
           style={{ transform: `rotate(${open ? '0' : '-90'}deg)` }}
-        /> }
+        />}
         <img src={icon} />
-        <span>{ name }</span>
+        <span>{name}</span>
       </div>
-      { open && children.map((item: any) => <TreeItem item={item} key={`tree_item_${item.id}`} index={index + 1} onClick={onClick} current={current} />) }
+      {open && children.map((item: any) => <TreeItem item={item} key={`tree_item_${item.id}`} index={index + 1} onClick={onClick} current={current} />)}
     </>
   )
 };
@@ -37,19 +37,25 @@ const TreeItem = ({item, onClick, index, current}: any) => {
 const Tree = () => {
   const [state, setState] = useSignal('app');
 
-  const { dsl, currentComponent:current } = state;
+  const { dsl, currentComponent: current } = state;
 
   // @ts-ignore
   const onClick = (componentInstance) => {
     setState({ currentComponent: componentInstance })
   };
 
+  if (!dsl?.length) return null;
+
   return (
-    <div className='tree-container'>
-      {
-        dsl.map((item: any) => <TreeItem item={item} current={current} key={`tree_item_${item.id}`} index={0} onClick={onClick} />)
-      }
-    </div>
+    <>
+      <div className='ComponentStore-title'>组件结构</div>
+      <div className='tree-container'>
+
+        {
+          dsl.map((item: any) => <TreeItem item={item} current={current} key={`tree_item_${item.id}`} index={0} onClick={onClick} />)
+        }
+      </div>
+    </>
   )
 };
 

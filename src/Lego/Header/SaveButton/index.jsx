@@ -41,9 +41,10 @@ const SaveButton = () => {
     () => events.off(EVENTS.SAVE, onSave);
   }, [dsl, id]);
 
-  return (
-    <div className='header-save-button-container' onClick={onSave}>保存</div>
-  )
+  // return (
+  //   <div className='header-save-button-container' onClick={onSave}>保存</div>
+  // )
+  return null;
 };
 
 export default SaveButton;

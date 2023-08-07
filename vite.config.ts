@@ -6,7 +6,8 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 8080
+    port: 8080,
+    https: true
   },
   plugins: [
     react(),
@@ -17,7 +18,7 @@ export default defineConfig({
       'events': path.resolve('./src/Lego/base/Events/index.ts'),
       'const': path.resolve('./src/Lego/const/index.ts'),
       'creator': path.resolve('./src/Lego/base/ComponentCreator/index.ts'),
-      '@service': path.resolve('./src/common/service.js'),
+      '@service': path.resolve('./src/common/service.ts'),
       'lib': path.resolve('./src/common/lib.js'),
       'toast': path.resolve('./src/Lego/Toast/index.tsx')
     }

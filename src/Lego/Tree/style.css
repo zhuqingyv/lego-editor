@@ -1,11 +1,12 @@
 .tree-container {
   width: 100%;
-  min-height: 400px;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  height: 400px;
   overflow: scroll;
   transform: scale(1);
-  padding-top: 6px;
   padding-left: 4px;
+}
+.tree-container::-webkit-scrollbar {
+  display: none;
 }
 .tree-container div{
   margin-right: 8px;

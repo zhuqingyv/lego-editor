@@ -9,6 +9,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 999;
 }
 
 .toast-content {
@@ -34,7 +35,7 @@
 }
 
 .toast-content-loading-icon {
-  animation: loading 2s infinite linear;
+  animation: loading 1s infinite linear;
 }
 
 @keyframes toast {

@@ -15,7 +15,7 @@ const SchemaDefaultValueGetter = ({ componentInstance }) => {
   useEffect(() => {
     queueMicrotask(() => {
       form.submit();
-    })
+    });
   }, [componentInstance]);
 
   return (

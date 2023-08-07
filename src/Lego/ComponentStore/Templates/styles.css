@@ -1,0 +1,10 @@
+.templates-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  padding: 12px;
+  padding-top: 0;
+  background-color: #f6f6f6;
+  flex: 1;
+}

@@ -1,0 +1,19 @@
+.ComponentStore-list-container {
+  width: 100%;
+  background-color: #fafafa;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  flex-wrap: wrap;
+
+  padding: 12px;
+  padding-top: 0;
+
+  background-color: #f6f6f6;
+
+  flex: 1;
+}

@@ -9,3 +9,42 @@
 .template-creator-half-container {
   flex: 1
 }
+.template-creator-preview-image-container {
+  width: 260px;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0,0,0,1);
+  border-radius: 12px;
+  background: linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.4) 25%,
+    transparent 25%,
+    transparent 75%,
+    rgba(0, 0, 0, 0.4) 75%,
+    rgba(0, 0, 0, 0.4) 100%
+  ),
+  linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.4) 25%,
+    transparent 25%,
+    transparent 75%,
+    rgba(0, 0, 0, 0.4) 75%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  /* 背景大小必须小于盒子的大小 */
+  background-size: 4px 4px;
+  /* 第二种渐变的偏移必须为为背景大小的一半 */
+  background-position: 0 0, 2px 2px;
+  background-color: rgba(0,0,0,0.1);
+}
+.template-creator-preview-image {
+  width: 260px;
+  height: 260px;
+  object-fit: contain;
+  display: block;
+  transition: all 0.3s;
+}
+.template-creator-preview-image:hover {
+  transform: scale(1.5);
+}

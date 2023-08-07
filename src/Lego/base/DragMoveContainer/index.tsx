@@ -14,7 +14,7 @@ const mouseInfo = {
 };
 
 const ComponentEditor = (props: any) => {
-  const { show = false, children = null, title = '', onClose = () => null } = props;
+  const { show = false, children = null, title = '', onClose = () => null, onMounted = () => null } = props;
   const [state, setState] = useState(mouseInfo);
 
   const header = useRef() as any;
@@ -63,6 +63,10 @@ const ComponentEditor = (props: any) => {
       document.removeEventListener('mouseup', onMouseUp);
     }
   }, [header.current]);
+
+  useEffect(() => {
+    if (show) onMounted();
+  }, [show]);
 
   if (!show) return null;
 

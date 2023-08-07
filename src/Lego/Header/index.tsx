@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import Switch from "react-switch";
 import QRCodeView from 'qrcode.react';
 // @ts-ignore
-import AddComponentButton from './AddComponentButton';
+// import AddComponentButton from './AddComponentButton';
 // @ts-ignore
 import SaveButton from './SaveButton';
 

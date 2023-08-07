@@ -100,3 +100,18 @@ export default (key, ...arg) => {
   const fetchItem = config[key];
   if (fetchItem) return fetchItem(...arg);
 };
+
+// 合并分支
+// const response = await axios.post(
+//   'https://gitlab.example.com/api/v4/projects/:projectId/merge_requests',
+//   {
+//     source_branch: 'feat-version-1',
+//     target_branch: 'feat-base',
+//     squash: true
+//   },
+//   {
+//     headers: {
+//       'Private-Token': 'your-private-token'
+//     }
+//   }
+// );

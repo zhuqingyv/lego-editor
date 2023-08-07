@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSignal } from 'react-use-signal';
 import FormRender, { useForm } from 'form-render';
 import DragMoveContainer from '../base/DragMoveContainer';
+import { toast, TypeEnum } from '../Toast';
 import ReactAce from 'react-ace';
 import schema from './schema';
 // @ts-ignore
@@ -12,6 +13,7 @@ import './style.css';
 
 const TemplateCreator = () => {
   const [state, setState] = useSignal('template-creator');
+  const [api] = useSignal('app', 'api');
   const form = useForm();
   const {
     show,
@@ -26,8 +28,12 @@ const TemplateCreator = () => {
 
   const onChange = async(value: any) => {
     const { icon, name } = value;
+    toast('新增模版中...', TypeEnum.LOADING);
+    await setState({ show: false, dsl: [],icon: '', name: ''});
     await service('createTemplate', { icon, name, dsl: JSON.stringify(dsl) });
-    window.location.reload();
+    toast('刷新模版列表中...', TypeEnum.LOADING);
+    await api.allTemplate();
+    toast('新增模版成功', TypeEnum.SUCCESS);
   };
 
   useEffect(() => {
@@ -43,7 +49,16 @@ const TemplateCreator = () => {
     <DragMoveContainer show={show} title="添加模版" onClose={onClose}>
       <div className='template-creator-container'>
         <div className='template-creator-half-container' style={{ padding: '12px' }}>
-          <FormRender footer form={form} schema={schema} column={2} onFinish={onChange} />
+          <FormRender
+            footer
+            form={form}
+            schema={schema({ title: `${Date.now()}`, icon })}
+            column={2}
+            onFinish={onChange}
+          />
+          <div className='template-creator-preview-image-container'>
+            <img className='template-creator-preview-image' src={icon} />
+          </div>
         </div>
         <div className='template-creator-half-container'>
           <ReactAce

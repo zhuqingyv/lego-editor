@@ -70,6 +70,6 @@ export const toast = (content: string = '', type: TypeEnum = TypeEnum.LOADING) =
           type: TypeEnum.SUCCESS
         });
       };
-    }, 1000);
+    }, type === TypeEnum.LOADING ? 5000 : 1000);
   };
 }
