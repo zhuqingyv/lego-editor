@@ -18,6 +18,20 @@ const loadLib = async() => {
   ]);
 };
 
+const transform = (array:any[] = []): any[] => {
+  if (!array?.length) return [];
+
+  return array.map((item) => {
+    const { n, i, c, s, name, id, children = [], schemaValue } = item;
+    return {
+      name: n || name,
+      id: i || id,
+      children: transform(c || children),
+      schemaValue: s || schemaValue,
+    }
+  });
+}
+
 const loadLibPromise = loadLib();
 
 export const [state, setState] = createSignal('app', {
@@ -62,7 +76,9 @@ export const [state, setState] = createSignal('app', {
         const page = safeParse(res, null);
         if (page) {
           const { dsl, icon, id, name } = page;
-          setState({ dsl, icon, id, name, status: 1 });
+          const newDsl =  transform(dsl);
+
+          setState({ dsl: newDsl, icon, id, name, status: 1 });
           toast('DSL 加载成功!', TypeEnum.SUCCESS);
         };
       });
@@ -73,8 +89,8 @@ export const [state, setState] = createSignal('app', {
         .then((templateList = []) => {
           const allTemplate = templateList.map(({ path, contentValue }) => {
             const value = JSON.parse(contentValue);
-            const { dsl = '{}', id, name, icon } = value;
-            return { id, name, path, dsl: JSON.parse(dsl), icon, type: 'template' };
+            const { dsl = '[]', id, name, icon } = value;
+            return { id, name, path, dsl: transform(JSON.parse(dsl)), icon, type: 'template' };
           });
 
           return setState({ allTemplate });

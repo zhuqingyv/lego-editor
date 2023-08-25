@@ -17,7 +17,8 @@
   background-color: white;
   /* transform: scale(0.7); */
   zoom: 0.7;
-  overflow: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
   box-shadow: 0 0 12px rgba(0,0,0,0.3);
   flex: 0 0 auto;
   position: absolute;

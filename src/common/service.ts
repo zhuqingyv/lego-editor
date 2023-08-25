@@ -1,4 +1,5 @@
 import HttpGitLabService from '../HttpGitLabService';
+// @ts-ignore
 import { safeParse } from 'lib';
 import uuid from 'react-uuid';
 
@@ -13,11 +14,12 @@ const gitLabService = new HttpGitLabService({
   branch
 });
 
-const config = {
+const config:any = {
   // 获取所有页面
   'pageList': async(isDev = false) => {
     const path = isDev ? 'src-dev/pages' : 'src/pages';
     const pageList = await gitLabService.reduceFolderFile(path);
+    // @ts-ignore
     return pageList.map((page) => {
       const { contentValue } = page;
       return safeParse(contentValue, []);
@@ -41,14 +43,21 @@ const config = {
       .then((res) => res);
   },
 
+  // 删除页面
+  'deletePage': async(id: string, isDev = false) => {
+    const basePath = isDev ? 'src-dev/pages' : 'src/pages';
+    return gitLabService
+      .deleteFile(`${basePath}/${id}.json`)
+  },
+
   // 获取页面信息
-  'pageInfo': async (id, isDev = false) => {
+  'pageInfo': async (id: string, isDev = false) => {
     const path = isDev ? 'src-dev/pages' : 'src/pages';
     return gitLabService.readFile(`${path}/${id}.json`);
   },
 
   // 修改页面信息
-  'setPage': async (page, isDev = false) => {
+  'setPage': async (page: any, isDev = false) => {
     const { id, name, dsl, rnVersion, icon, status } = page;
     const path = isDev ? 'src-dev/pages' : 'src/pages';
     return gitLabService.writeFile(`${path}/${id}.json`, JSON.stringify({ id, name, dsl, rnVersion, icon, status }));
@@ -61,12 +70,12 @@ const config = {
   },
 
   // 设置组件
-  'setComponent': async({ name, type, value, isDev } = {}) => {
+  'setComponent': async({ name, type, value, isDev }: any = {}) => {
     const path = isDev ? 'src-dev/components' : 'src/components';
   },
 
   // 新增模版
-  'createTemplate': async({ isDev, name, dsl = [], icon = 'https://picasso-static.xiaohongshu.com/fe-platform/a91e4d0f2e1701115bd59839b5b634cd4f3ea3cc.png' }) => {
+  'createTemplate': async({ isDev, name, dsl = [], icon = 'https://picasso-static.xiaohongshu.com/fe-platform/a91e4d0f2e1701115bd59839b5b634cd4f3ea3cc.png' }: any) => {
     const basePath = isDev ? 'src-dev/template' : 'src/template';
     const id = uuid();
     const template = {
@@ -83,7 +92,7 @@ const config = {
   },
 
   // 删除模版
-  'deleteTemplate': async({ id, isDev }) => {
+  'deleteTemplate': async({ id, isDev }:any) => {
     const basePath = isDev ? 'src-dev/template' : 'src/template';
     return gitLabService.deleteFile(`${basePath}/${id}.json`)
   },
@@ -96,7 +105,7 @@ const config = {
 };
 
 
-export default (key, ...arg) => {
+export default (key: string, ...arg: any[]) => {
   const fetchItem = config[key];
   if (fetchItem) return fetchItem(...arg);
 };

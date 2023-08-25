@@ -1,55 +1,15 @@
 import { memo, useEffect, useRef } from 'react';
 import * as htmlToImage from 'html-to-image';
-import GIF from 'gif.js';
+// import GIF from 'gif.js';
 // import html2canvas from 'html2canvas';
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
 // @ts-ignore
 import { toast, TypeEnum } from 'toast'
-import gifWorkerString from './gif.worker';
+// import gifWorkerString from './gif.worker';
 import './style.css';
 import './html2canvas.js';
 import html2canvas from 'html2canvas';
-
-function htmlToBase64(htmlElement: HTMLElement): string {
-  // 创建一个空的SVG元素
-  const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
-  // 设置SVG元素的宽度和高度
-  svgElement.setAttribute('width', htmlElement.offsetWidth.toString());
-  svgElement.setAttribute('height', htmlElement.offsetHeight.toString());
-
-  // 将HTML视图的内容转换为SVG元素
-  const serializer = new XMLSerializer();
-  const svgString = serializer.serializeToString(htmlElement);
-  svgElement.innerHTML = svgString;
-
-  // 将SVG元素转换为Base64编码
-  const svgData = new XMLSerializer().serializeToString(svgElement);
-  const encoder = new TextEncoder();
-  const svgDataArray = encoder.encode(svgData);
-  const base64Data = base64ArrayBuffer(svgDataArray);
-
-  return base64Data;
-}
-
-function base64ArrayBuffer(arrayBuffer: Uint8Array): string {
-  let binary = '';
-  const bytes = new Uint8Array(arrayBuffer);
-  const len = bytes.byteLength;
-  for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
-}
-
-function convertToBase64(svgString: string): string {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(svgString);
-  const charArray = Array.from(data).map(byte => String.fromCharCode(byte));
-  const base64String = btoa(charArray.join(''));
-  return `data:image/svg+xml;base64,${base64String}`;
-}
 
 const asyncLoop = async (callback: any, count: number, delay: number, notFirst?: any) => {
   const promise = new Promise((resolve: any) => {
@@ -140,14 +100,16 @@ const RectInspect = () => {
   const isActive = useRef(true);
 
   useEffect(() => {
-    const rectRegister = (item: { id: string }, element: any, updater) => {
+    const rectRegister = (item: { id: string }, element: any) => {
+      // debugger;
       const { id } = item;
+
       rect.register(id, element);
       if (element) {
-        element.onclick = (event: any) => {
+        element.onmousedown = (event: any) => {
           event.stopPropagation();
           setState({ currentComponent: item });
-        }
+        };
       };
     };
     if (!state.rectRegister) setState({ rectRegister });

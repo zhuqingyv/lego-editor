@@ -1,11 +1,16 @@
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
 import { Link } from 'react-router-dom'
+// @ts-ignore
+import service from '@service';
 import './style.css';
-
+// deletePage
 const DeleteIcon = ({ id }:any) => {
-  const onDelete = () => {
-    console.log(id)
+  const onDelete = async(event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    await service('deletePage', id);
+    window.location.reload();
   };
   return <img className='page-list-item-delete-icon' src="https://picasso-static.xiaohongshu.com/fe-platform/f9bd74a158d17635d3fdca85a0330d3f41e3bae6.png" onClick={onDelete} />
 };

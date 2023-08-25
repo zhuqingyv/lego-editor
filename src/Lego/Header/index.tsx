@@ -4,39 +4,76 @@ import {
 } from 'lz-string';
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
+import copy from 'copy-to-clipboard';
 import { Link } from 'react-router-dom';
 import Switch from "react-switch";
 import QRCodeView from 'qrcode.react';
+import { toast, TypeEnum } from 'toast'
 // @ts-ignore
 // import AddComponentButton from './AddComponentButton';
 // @ts-ignore
 import SaveButton from './SaveButton';
+import NameChange from './NameChange';
+// @ts-ignore
+import { zipDSL } from 'lib';
 
 import './style.css';
+
+const zipNoId = (dsl: any = []) => {
+  return dsl.map((item: any) => {
+    const { n, s, c } = item;
+    const _c = zipNoId(c);
+    return {
+      n,
+      s,
+      c: _c?.length ? _c : undefined
+    }
+  })
+};
+
+// const zipNoObject = (dsl: any = []) => {
+//   return dsl.reduce((pre, cur) => {
+//     const { n, s, c } = cur;
+//     const item = [n, s];
+//     if (c?.length) item.push(zipNoObject(c));
+//     pre.push(item);
+//     return pre;
+//   }, []);
+// };
 
 const Preview = memo(() => {
   const [show, setShow] = useState(true);
   const [id] = useSignal('app', 'id');
   const [dsl] = useSignal('app', 'dsl');
+  const newZipNameDsl = zipDSL(dsl, true);
+  const newZipNameIdDsl = zipNoId(newZipNameDsl);
 
-  // 压缩
-  const stringZip = compressToBase64(JSON.stringify({ id, dsl }));
-  const valueDSL = `xhsdiscover://rn/lancer-slim/box?id=${id}&dsl=${stringZip}`;
+  const baseRouter = 'xhsdiscover://rn/lancer-slim/lego';
 
-  const value = valueDSL.length >= 1600 ? `xhsdiscover://rn/lancer-slim/box?id=${id}` : valueDSL;
+  const stringZipId = compressToBase64(JSON.stringify({ id, dsl: newZipNameIdDsl }));
+
+  const valueDSL = `${baseRouter}?id=${id}&dsl=${stringZipId}`;
+  const value = valueDSL.length >= 2900 ? `${baseRouter}?id=${id}` : valueDSL;
+
+  const onCopyLink = () => {
+    if (copy(valueDSL)) {
+      toast('复制链接成功', TypeEnum.SUCCESS);
+    } else {
+      toast('复制链接失败', TypeEnum.FAIL);
+    };
+  };
 
   if (!show) return null;
 
   return (
     <div className='header-QR-container'>
       <div className='header-QR-button-container'>
-        <img className='header-QR-button' src="https://picasso-static.xiaohongshu.com/fe-platform/aa2e0ae046093ea740259c10bd4bebd6257233fc.png" />
+        <img onClick={onCopyLink} className='header-QR-button' src="https://picasso-static.xiaohongshu.com/fe-platform/aa2e0ae046093ea740259c10bd4bebd6257233fc.png" />
         <div className='header-QR'>
           <QRCodeView
             value={value}
-            renderAs='svg'
+            renderAs='canvas'
             size={200}
-            max={100}
           />
         </div>
       </div>
@@ -66,6 +103,7 @@ const HeaderView = memo(() => {
       <Link to='../../' relative="path" reloadDocument style={{ zIndex: 3 }}>
         <img src="https://picasso-static.xiaohongshu.com/fe-platform/a91e4d0f2e1701115bd59839b5b634cd4f3ea3cc.png" className='header-view-logo' />
       </Link>
+      <NameChange />
       <Preview />
       {/* <AddComponentButton /> */}
       <DevChangeButton />

@@ -12,18 +12,20 @@ import Engine from './Engine';
 import DropAble from './DropAble';
 import RectInspect from './RectInspect';
 import update from './Update';
-import TimeLine from './TimeLine';
+// import TimeLine from './TimeLine';
 // @ts-ignore
 import service from '@service';
 // @ts-ignore
-import { safeParse } from 'lib';
+import { safeParse, zipDSL } from 'lib';
 import './style.css';
 
 const Editor = () => {
   const [state, setState] = useSignal('app');
 
-  const onClick = () => {
-    setState({ currentComponent: null });
+  const onClick = (event: any) => {
+    if (event.target.className === 'editor-container') {
+      setState({ currentComponent: null });
+    }; 
   };
 
   const findDSLInstance = ({ id, ifDelete = false }: any, callback: (param:{list:[], item: any, i: number}) => any ) => {
@@ -50,16 +52,18 @@ const Editor = () => {
   const updateComponentInstance = async({ id }: { id: string }) => {
     if (id === '#') {
       await setState({ dsl: safeParse(JSON.stringify(state.dsl), {}) });
-      await service('setPage', state);
-      toast('更新成功!', TypeEnum.SUCCESS);
+      const { message } = await service('setPage', state);
+      toast(message || '更新成功!', TypeEnum.SUCCESS);
       return;
     };
 
     const updater = update.find(id);
     if (updater) {
       updater(() => async() => {
-        await service('setPage', state);
-        toast('更新成功!', TypeEnum.SUCCESS);
+        const { id, name, rnVersion, icon } = state;
+        const newDsl = zipDSL(state.dsl, true);
+        const { message } = await service('setPage', { id, name, dsl: newDsl, rnVersion, icon });
+        toast(message || '更新成功!', TypeEnum.SUCCESS);
       });
     };
   };
@@ -98,7 +102,7 @@ const Editor = () => {
     <>
       <div className="editor-container" onClick={onClick}>
         <DropAble onAddComponent={updateComponentInstance} findDSLInstance={findDSLInstance}>
-          <div className='editor-preview'>
+          <div className='editor-preview' onClick={() => null}>
             <Engine />
           </div>
         </DropAble>

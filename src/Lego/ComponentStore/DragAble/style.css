@@ -1,6 +1,6 @@
 .drag-able-container {
   width: 80px;
-  background-color: #fafafa;
+  background-color: #e5e5e5;
   transition: all 0.3s;
   border-radius: 4px;
   margin-right: 12px;
@@ -34,7 +34,7 @@
   z-index: 1;
 }
 .drag-able-container > img:nth-child(1):hover {
-  transform: scale(1.2);
+  transform: scale(1.5);
 }
 .drag-able-icon-container {
   width: 80px;
@@ -80,7 +80,7 @@
   transition: all 0.3s;
 }
 .drag-able-icon:hover {
-  transform: scale(1.1);
+  transform: scale(1.5);
 }
 .drag-able-name {
   font-size: 11px;

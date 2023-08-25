@@ -29,10 +29,9 @@ const Button = ({ type, text, onClick }:any) => {
 
 const HeaderView = () => {
   const [_, setState] = useSignal('pageList');
-  const onAddPage = () => {
-    service('createPage').then((res: any) => {
-      setState(res);
-    })
+  const onAddPage = async() => {
+    await service('createPage');
+    window.location.reload();
   };
 
 

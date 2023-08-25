@@ -68,7 +68,12 @@ class HttpGitLabService {
   // 写文件
   writeFile = async (filePath: string, fileString: string) => {
     const { apiUrl, projectId, branch, accessToken } = this;
-    await axios.put(`${apiUrl}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}`, {
+    const fileOriginValue = await this.readFile(filePath);
+
+    if (fileOriginValue === fileString) {
+      return Promise.resolve({ code: -1, message: '文件未变更' });
+    };
+    return await axios.put(`${apiUrl}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}`, {
       branch,
       content: fileString,
       commit_message: `${new Date().toLocaleTimeString()}`

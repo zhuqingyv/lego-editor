@@ -1,0 +1,20 @@
+.name-change-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+.name-change-input {
+  border: none;
+  user-select: text;
+  outline: none;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 4px;
+  padding: 2px 4px;
+  color: #a0a0a0;
+}
+.name-change-icon {
+  width: 16px;
+  height: 16px;
+  margin-bottom: 4px;
+  margin-left: 4px;
+}

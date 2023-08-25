@@ -6,7 +6,21 @@ export const safeParse = (string, defaultValue) => {
   };
 };
 
-export const zipDSL = (dsl = []) => {
+export const zipDSL = (dsl = [], nameZip = false) => {
+  // 名称压缩
+  if (nameZip) return dsl.reduce((pre, cur) => {
+    const { n, i, c, s, children = [], name, id, schemaValue } = cur;
+    const zip = {
+      n: n || name,
+      i: i || id,
+      c: zipDSL(c || children, nameZip),
+      s: s || schemaValue
+    };
+    pre.push(zip);
+    return pre;
+  }, []);
+
+  // 非名称压缩
   return dsl.reduce((pre, cur) => {
     const { children = [], name, id, schemaValue } = cur;
     const zip = {

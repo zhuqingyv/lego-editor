@@ -1,9 +1,15 @@
 import { useEffect } from 'react';
+// @ts-ignore
 import { events } from 'events';
+// @ts-ignore
 import { EVENTS } from 'const';
+// @ts-ignore
 import { creator } from 'creator';
+// @ts-ignore
 import { useSignal } from 'react-use-signal';
+// @ts-ignore
 import { toast, TypeEnum } from 'toast'
+// @ts-ignore
 import { zipDSL } from 'lib';
 
 class HotKeyCore {
@@ -11,10 +17,12 @@ class HotKeyCore {
   cacheKey = [];
   _current = null;
 
-  constructor(hotkey = [], callback) {
+  constructor(hotkey = [], callback = () => null) {
     document.addEventListener('keydown', (event) => {
       const { key } = event;
+      // @ts-ignore
       if (!this.cacheKey.includes(key)) {
+        // @ts-ignore
         this.cacheKey.push(key);
         this.check(event);
       }
@@ -22,19 +30,26 @@ class HotKeyCore {
 
     document.addEventListener('keyup', (event) => {
       const { key } = event;
+      // @ts-ignore
       if (this.cacheKey.includes(key)) {
+        // @ts-ignore
         this.cacheKey.splice(this.cacheKey.indexOf(key), 1);
+        // @ts-ignore
         this.check();
-      }
-      this.cacheKey = [];
+      };
     });
 
+    // @ts-ignore
     this.hotkey = hotkey;
+    // @ts-ignore
     this.callback = callback;
   };
 
+  // @ts-ignore
   check = (event) => {
+    // @ts-ignore
     const { cacheKey, hotkey } = this;
+    // @ts-ignore
     const truthy = hotkey.find((hotkeyGroup) => {
       const { length } = hotkeyGroup;
       if (cacheKey.length !== length) return false;
@@ -59,25 +74,29 @@ class HotKeyCore {
 
   set current(value) {
     this._current = value;
+    // @ts-ignore
     if (this.onUpdate) this.onUpdate(this._current, this.event);
   };
 };
 
 class HotKeys extends HotKeyCore {
-  constructor(...arg) {
+  constructor(...arg: any[]) {
     super(...arg);
   };
+  // @ts-ignore
   onUpdate = (hotKey, event) => {
+    // @ts-ignore
     if (this.callback) this.callback({
       event,
       hotkeys: hotKey,
       value: hotKey.join('+')
-    })
+    });
+    this.cacheKey = [];
   };
 };
 
 const hotKey = new HotKeys(
-  [['Meta', 's'], ['Meta', 'Backspace'], ['Meta', 'c'], ['Meta', 'v'], ['Meta', 'g']],
+  [['Meta', 's'], ['Meta', 'Backspace'], ['Meta', 'c'], ['Meta', 'v'], ['Meta', 'g'], ['Meta', 'f']],
   () => null
 );
 
@@ -85,14 +104,14 @@ export const HotKey = () => {
   const [state, setState] = useSignal('app');
   const [templateCreatorState] = useSignal('template-creator');
 
-  const buildComponentInstance = (component) => {
+  const buildComponentInstance = (component: any) => {
     const componentInstance = creator.build({ name: component.name });
     const { schemaValue } = component;
     Object.assign(componentInstance, { schemaValue });
     return componentInstance;
   };
 
-  const addComponent = (component) => {
+  const addComponent = (component: any) => {
     if (state.currentComponent) {
       state.currentComponent.children.push(component);
     } else {
@@ -101,7 +120,7 @@ export const HotKey = () => {
     return setState({ dsl: state.dsl });
   };
 
-  const hotKeyCallback = async({ value, event }) => {
+  const hotKeyCallback = async({ value, event }:any) => {
     switch(value) {
       // 删除元素
       case 'Meta+Backspace': {
@@ -112,6 +131,7 @@ export const HotKey = () => {
       }
       // 保存元素
       case 'Meta+s': {
+        toast('保存中', TypeEnum.LOADING);
         event.preventDefault();
         // const { isDev, currentMaterial } = state;
 
@@ -157,19 +177,24 @@ export const HotKey = () => {
           const { onScreenShot } = state;
           if (onScreenShot) {
             const icon = await onScreenShot();
-            const dsl = zipDSL([currentComponent]);
+            const dsl = zipDSL([currentComponent], true);
             setShow({ dsl, show: true, icon });
           } else {
-            const dsl = zipDSL([currentComponent]);
+            const dsl = zipDSL([currentComponent], true);
             setShow({ dsl, show: true });
           };
         };
+        break;
+      }
+      case 'Meta+f': {
+        event.preventDefault();
         break;
       }
     }
   };
 
   useEffect(() => {
+    // @ts-ignore
     hotKey.callback = hotKeyCallback
   }, [])
 

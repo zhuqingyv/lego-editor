@@ -4,42 +4,41 @@ import service from '@service';
 
 import { events } from 'events';
 import { EVENTS } from 'const';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-const zipDSL = (dsl = []) => {
-  return dsl.reduce((pre, cur) => {
-    const { children = [], name, id, schemaValue } = cur;
-    const zip = {
-      name,
-      id,
-      children: children?.length ? zipDSL(children) : [],
-      schemaValue
-    };
-    pre.push(zip);
-    return pre;
-  }, []);
-};
+// @ts-ignore
+import { zipDSL } from 'lib';
 
 const SaveButton = () => {
+  const updater = useRef(null);
   const [state] = useSignal('app');
-  const { id, dsl } = state;
 
   const onSave = () => {
-    const newDsl = zipDSL(state.dsl);
+    const newDsl = zipDSL(state.dsl, true);
     const { id, name, rnVersion, icon, status } = state;
 
     if (status < 1) return;
-    service('setPage', { id, name, dsl: newDsl, rnVersion, icon })
-    .then(() => {
-      toast('保存成功!', TypeEnum.SUCCESS);
-    })
+
+    if (updater.current) return;
+
+    updater.current = setTimeout(() => {
+      service('setPage', { id, name, dsl: newDsl, rnVersion, icon })
+        .then(({ message } = {}) => {
+          toast(message || '保存成功!', TypeEnum.SUCCESS);
+        })
+        .finally(() => {
+          updater.current = null;
+        })
+    }, 1000);
   };
 
   useEffect(() => {
-    events.off(EVENTS.SAVE, onSave);
+    events.off(EVENTS.SAVE);
     events.on(EVENTS.SAVE, onSave);
-    () => events.off(EVENTS.SAVE, onSave);
-  }, [dsl, id]);
+    () => {
+      events.off(EVENTS.SAVE);
+    }
+  }, []);
 
   // return (
   //   <div className='header-save-button-container' onClick={onSave}>保存</div>

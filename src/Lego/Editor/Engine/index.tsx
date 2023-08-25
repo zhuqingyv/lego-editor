@@ -7,7 +7,7 @@ import LottieZipSourceLoader from '../../base/LottieZipSourceLoader';
 import update from '../Update';
 
 // @ts-ignore
-const EditorView = memo(({ item, rectRegister, material }) => {
+const EditorView = memo(({ item, rectRegister, material }: any) => {
   const [updater, setState] = useState(() => () => null) as any;
   update.create(item.id, setState);
 
@@ -28,13 +28,13 @@ const EditorView = memo(({ item, rectRegister, material }) => {
     return (
       <ItemEditorView
         lottieZipLoader={LottieZipSourceLoader}
-        rectRegister={(ref:any) => rectRegister(item, ref)}
+        rectRegister={(ref: any) => rectRegister(item, ref)}
         componentInstance={item}
         key={item.id}
         DropAble={DropAble}
-        { ...item }
+        {...item}
       >
-        { !!(item?.children?.length) && <Engine dsl={item.children} /> }
+        {!!(item?.children?.length) && <Engine dsl={item.children} />}
       </ItemEditorView>
     )
   };
@@ -44,31 +44,36 @@ const EditorView = memo(({ item, rectRegister, material }) => {
     return (
       <ItemEditorView
         lottieZipLoader={LottieZipSourceLoader}
-        rectRegister={(ref:any) => rectRegister(item, ref)}
+        rectRegister={(ref: any) => rectRegister(item, ref)}
         componentInstance={item}
         key={item.id}
         DropAble={DropAble}
-        { ...item }
+        {...item}
       >
-        { !!(item?.children?.length) && <Engine dsl={item.children} /> }
+        {!!(item?.children?.length) && <Engine dsl={item.children} />}
       </ItemEditorView>
     );
   };
 
   return null;
-}, (props1:any, props2:any) => {
-  
+}, (props1: any, props2: any) => {
   return props1.item === props2.item && JSON.stringify(props1) === JSON.stringify(props2)
 });
 // @ts-ignore
-const Engine = ({ dsl: currentDSL }) => {
-  const [ dsl ] = useSignal('app', 'dsl');
-  const [ rectRegister ] = useSignal('app', 'rectRegister');
-  const [ material ] = useSignal('app', 'material');
+const Engine = ({ dsl: currentDSL }: any) => {
+  const [dsl] = useSignal('app', 'dsl');
+  const [rectRegister] = useSignal('app', 'rectRegister');
+  const [material] = useSignal('app', 'material');
 
   if (!dsl?.length) return null;
   // @ts-ignore
-  return [...(currentDSL || dsl)].map((item: any, i: number) => <EditorView item={item} rectRegister={rectRegister} material={material} key={`engine-${item.id}`} />);
+  return (
+    <>
+      {
+        [...(currentDSL || dsl)].map((item: any, i: number) => <EditorView item={item} rectRegister={rectRegister} material={material} key={`engine-${item.id || item.i}`} />)
+      }
+    </>
+  );
 };
 
 export default Engine;

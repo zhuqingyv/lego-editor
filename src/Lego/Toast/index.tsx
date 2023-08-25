@@ -36,14 +36,12 @@ const ToastContainer = () => {
 
   const { type, visible, content } = state;
 
-  if (!visible) return null;
-
   const icon = getIcon(type);
 
   return (
-    <div className="toast-container">
+    <div className="toast-container" style={{ display: visible ? 'flex': 'none' }}>
       <div className='toast-content'>
-        <img src={icon} className={type === TypeEnum.LOADING ? 'toast-content-loading-icon': ''} />
+        <img key={icon} src={icon} className={type === TypeEnum.LOADING ? 'toast-content-loading-icon': ''} />
         { content }
       </div>
     </div>
