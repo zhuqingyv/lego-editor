@@ -5,7 +5,16 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "creator": "node ./create.js",
+    "晒单": "node ./edit-note.jsxxxxx",
+    "盒子手动开": "node ./edit-box.jsxxxxx",
+    "盒子手动开无头像": "node ./edit-box-60.js",
+    "盒子自动开": "node ./edit-box-auto.jsxxxxx",
+    "老盒子": "node ./edit-box-old.jsxxxxx",
+    "find": "node ./find.jsxxxxx",
+    "prefetch": "node ./dsl-prefetch.jsxxxxx",
+    "user-info": "node ./dsl-66.js"
   },
   "dependencies": {
     "@ant-design/icons": "^4.0.2",
@@ -52,7 +61,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^1.3.0",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "typescript": "^4.6.3",
     "uuid": "^9.0.0",
     "vite": "^2.9.9",

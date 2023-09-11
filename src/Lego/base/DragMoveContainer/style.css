@@ -9,7 +9,6 @@
   top: 0;
   left: 0;
 
-  overflow: hidden;
   z-index: 6;
 
   animation: dragMoveContainer 0.2s 1 ease-in;
@@ -25,6 +24,9 @@
   background-color: white;
   box-shadow: 0 0 8px rgba(0,0,0,0.1);
   cursor: move;
+
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 .drag-move-header-container img {
   width: 20px;
@@ -56,4 +58,29 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+/* 四边拖拽 */
+.drag-move-container-right {
+  width: 20px;
+  height: 100%;
+  position: absolute;
+  right: -10px;
+  top: 0px;
+  cursor: col-resize;
+  opacity: 0;
+  border-radius: 100px;
+  background-image: url(https://picasso-static.xiaohongshu.com/fe-platform/80c6e4408431f9df7715d1b8fa40b6750efa8e70.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+}
+.drag-move-container-right:hover {
+  opacity: 0.5;
+}
+.drag-move-container-content-box {
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.drag-move-container-content-box::-webkit-scrollbar {
+  display: none;
 }

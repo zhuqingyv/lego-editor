@@ -28,7 +28,7 @@ const Button = ({ type, text, onClick }:any) => {
 };
 
 const HeaderView = () => {
-  const [_, setState] = useSignal('pageList');
+  const [_] = useSignal('pageList');
   const onAddPage = async() => {
     await service('createPage');
     window.location.reload();
@@ -37,7 +37,7 @@ const HeaderView = () => {
 
   return (
     <div className='header-container'>
-      <img src="https://picasso-static.xiaohongshu.com/fe-platform/a91e4d0f2e1701115bd59839b5b634cd4f3ea3cc.png" className='header-view-logo' />
+      <img style={{ objectFit: 'contain' }} src="https://picasso-static.xiaohongshu.com/fe-platform/290df008fbd751248c04662111efa2de508c4bd4.png" className='header-view-logo' />
       <Button text="新增页面" onClick={onAddPage} />
     </div>
   )

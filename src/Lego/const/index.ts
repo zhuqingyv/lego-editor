@@ -6,5 +6,6 @@ export const EVENTS = {
   // 修改组件schema value
   UPDATE_COMPONENT_SCHEMA_VALUE: 'update_component_schema_value',
   // 保存
-  SAVE: 'save'
+  SAVE: 'save',
+  SAVE_COMPONENT: 'save_component'
 };

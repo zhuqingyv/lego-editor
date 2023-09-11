@@ -55,19 +55,41 @@ export const [state, setState] = createSignal('app', {
 
   api: {
     // 获取组件
-    'components': () => {
-      return service('components', ({ type, progress, all }: any) => {
-        toast(`${type}: ${((progress / all) * 100).toFixed(1)}%`, TypeEnum.LOADING)
-      }).then(async (res: any[]) => {
-        toast('开始加载基础库!', TypeEnum.LOADING);
-        // @ts-ignore
-        if (!window?.Babel) await loadLibPromise;
+    'components': async() => {
+      // 数据处理
+      const setData = (res: any) => {
         res.reverse().forEach((component: any) => {
           creator.create(componentLoader(component));
         });
         const material = creator.outputList();
         setState({ material });
-        toast('组件 加载成功!', TypeEnum.SUCCESS);
+      };
+
+       // @ts-ignore
+      if (!window?.Babel) await loadLibPromise;
+      // 本地缓存
+      const cache = localStorage.getItem('lego-components-cache');
+      if (cache) setData(safeParse(cache, []));
+
+      if (!cache) toast('开始加载组件库!', TypeEnum.LOADING);
+      return service('components', ({ type, progress, all }: any) => {
+        if (!cache) toast(`${type}: ${((progress / all) * 100).toFixed(1)}%`, TypeEnum.LOADING)
+      }).then(async (res: any[]) => {
+        const stringify = JSON.stringify(res);
+        if (cache) {
+          if (stringify !== cache) {
+            setData(res);
+            localStorage.setItem('lego-components-cache', stringify);
+            toast('组件 更新成功!', TypeEnum.SUCCESS);
+          } else {
+            toast('组件未变更!', TypeEnum.SUCCESS);
+          };
+        } else {
+          // 第一次加载组件
+          localStorage.setItem('lego-components-cache', stringify);
+          setData(res);
+          toast('组件 加载成功!', TypeEnum.SUCCESS);
+        };
       });
     },
     // 获取页面信息

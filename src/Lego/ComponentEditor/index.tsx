@@ -14,8 +14,22 @@ const ComponentEditor = () => {
   const [currentMaterial, setCurrentMaterial] = useSignal('app', 'currentMaterial');
 
   const onChange = (event: { type: string, value: string }) => {
-    const { type, value } = event;
-    console.log({ type, value });
+    const { type, value: codeValue } = event;
+
+    switch (type) {
+      case 'jsx': {
+        currentMaterial.jsxCode = codeValue;
+        break;
+      }
+      case 'schema': {
+        currentMaterial.schemaCode = codeValue;
+        break;
+      }
+      case 'css': {
+        currentMaterial.cssCode = codeValue;
+        break;
+      }
+    }
   };
 
   const onClose = () => {
@@ -25,7 +39,7 @@ const ComponentEditor = () => {
   if (!isDev || !currentMaterial) return null;
 
   return (
-    <DragMoveContainer show={true} title="组件编辑" onClose={onClose}>
+    <DragMoveContainer show={true} title="组件编辑" onClose={onClose} id="components-editor">
       <Tabs style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
         <TabList>
           <Tab>index.jsx</Tab>

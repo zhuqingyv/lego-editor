@@ -9,16 +9,13 @@ const CssEditor = ({ onChange, currentMaterial }: any) => {
     const { current } = timer;
     if (current) clearTimeout(current);
 
-    timer.current = setTimeout(() => {
-      onChange({ type: 'css', value: newCode });
-    }, 6000);
+    onChange({ type: 'css', value: newCode });
   };
 
   return (
     <ReactAce
       mode="css" // 设置编辑器的模式为JavaScript
       theme="chrome" // 设置编辑器的主题
-      readOnly
       enableBasicAutocompletion // 启用基本的自动完成
       enableLiveAutocompletion // 启用实时自动完成
       enableSnippets // 启用代码片段

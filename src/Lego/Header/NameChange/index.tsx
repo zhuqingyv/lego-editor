@@ -22,7 +22,7 @@ const NameChange = () => {
 
   return (
     <div className='name-change-container'>
-      <div className='name-change-input' contentEditable onCompositionEnd={onChange} dangerouslySetInnerHTML={{ __html: name }} key="name-change-input"></div>
+      <div className='name-change-input' contentEditable onBlur={onChange} key="name-change-input">{ name }</div>
       <img className='name-change-icon' src="https://picasso-static.xiaohongshu.com/fe-platform/e132cf4b8648a796c8a65bd82355ae69d99e5dbd.png" />
     </div>
   )

@@ -17,3 +17,20 @@
 
   flex: 1;
 }
+.ComponentStore-add-component-button {
+  width: 80px;
+  height: 90px;
+  border-radius: 8px;
+  background-color: #e5e5e5;
+  background-image: url(https://picasso-static.xiaohongshu.com/fe-platform/6de9010b006c6941763ffe52f21484ccfaf2289f.png);
+  background-position: center;
+  background-size: 12px;
+  background-repeat: no-repeat;
+  margin-right: 12px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.ComponentStore-add-component-button:hover {
+  background-size: 24px;
+  opacity: 0.5;
+}

@@ -60,7 +60,7 @@ const rect: Rect = {
 };
 
 const getStyle = () => {
-  const element = document.querySelector('.editor-container');
+  const element = document.querySelector('body');
   if (element) {
     const { width, height } = element.getBoundingClientRect();
     return { width, height };
@@ -101,7 +101,6 @@ const RectInspect = () => {
 
   useEffect(() => {
     const rectRegister = (item: { id: string }, element: any) => {
-      // debugger;
       const { id } = item;
 
       rect.register(id, element);
@@ -126,14 +125,24 @@ const RectInspect = () => {
           const { x, y, width, height } = element.getBoundingClientRect();
           const canvasRect = canvas.getBoundingClientRect();
           const ratio = 0.7;
+          // drawRectangle({
+          //   x: x * ratio - canvasRect.x / ratio,
+          //   y: y * ratio - canvasRect.y / ratio,
+          //   width: width * ratio,
+          //   height: height * ratio,
+          //   borderWidth: 0.5,
+          //   borderColor: 'rgba(0,100,255,1)',
+          //   backgroundColor: 'rgba(0,100,255,0.2)',
+          //   canvas
+          // });
           drawRectangle({
             x: x * ratio - canvasRect.x,
             y: y * ratio - canvasRect.y,
             width: width * ratio,
             height: height * ratio,
             borderWidth: 0.5,
-            borderColor: 'rgba(0,100,255,1)',
-            backgroundColor: 'rgba(0,100,255,0.2)',
+            borderColor: 'rgba(0,100,255,0.8)',
+            backgroundColor: 'rgba(0,100,255,0.1)',
             canvas
           })
         };

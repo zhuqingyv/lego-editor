@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
 // @ts-ignore
@@ -10,25 +10,27 @@ import { toast, TypeEnum } from 'toast'
 import Engine from './Engine';
 // @ts-ignore
 import DropAble from './DropAble';
-import RectInspect from './RectInspect';
+// import RectInspect from './RectInspect';
 import update from './Update';
 // import TimeLine from './TimeLine';
 // @ts-ignore
 import service from '@service';
 // @ts-ignore
 import { safeParse, zipDSL } from 'lib';
+import DragMoveContainer from '../base/DragMoveContainer';
 import './style.css';
 
 const Editor = () => {
+  const [size, setSize] = useState({ width: 375, height: 812 });
   const [state, setState] = useSignal('app');
 
   const onClick = (event: any) => {
     if (event.target.className === 'editor-container') {
       setState({ currentComponent: null });
-    }; 
+    };
   };
 
-  const findDSLInstance = ({ id, ifDelete = false }: any, callback: (param:{list:[], item: any, i: number}) => any ) => {
+  const findDSLInstance = ({ id, ifDelete = false }: any, callback: (param: { list: [], item: any, i: number }) => any) => {
     let result;
     const findLoop = (list: any) => {
       return list.find((item: any, i: number) => {
@@ -49,7 +51,7 @@ const Editor = () => {
     return result
   };
 
-  const updateComponentInstance = async({ id }: { id: string }) => {
+  const updateComponentInstance = async ({ id }: { id: string }) => {
     if (id === '#') {
       await setState({ dsl: safeParse(JSON.stringify(state.dsl), {}) });
       const { message } = await service('setPage', state);
@@ -59,7 +61,7 @@ const Editor = () => {
 
     const updater = update.find(id);
     if (updater) {
-      updater(() => async() => {
+      updater(() => async () => {
         const { id, name, rnVersion, icon } = state;
         const newDsl = zipDSL(state.dsl, true);
         const { message } = await service('setPage', { id, name, dsl: newDsl, rnVersion, icon });
@@ -70,7 +72,7 @@ const Editor = () => {
 
   const updateComponentSchemaValue = useCallback(({ id, value }: any) => {
     if (state.status < 1) return;
-    findDSLInstance({ id }, ({item}) => {
+    findDSLInstance({ id }, ({ item }) => {
       // @ts-ignore
       if (JSON.stringify(item.schemaValue) === JSON.stringify(value)) return;
       item.schemaValue = value;
@@ -81,7 +83,7 @@ const Editor = () => {
   const onDeleteComponentInstance = () => {
     if (state.status < 1) return;
     if (state.currentComponent) {
-      findDSLInstance({ id: state?.currentComponent?.id, ifDelete: true }, async() => {
+      findDSLInstance({ id: state?.currentComponent?.id, ifDelete: true }, async () => {
         await setState({ currentComponent: null, dsl: state.dsl });
         await service('setPage', state);
         toast('更新成功!', TypeEnum.SUCCESS);
@@ -101,14 +103,23 @@ const Editor = () => {
   return (
     <>
       <div className="editor-container" onClick={onClick}>
-        <DropAble onAddComponent={updateComponentInstance} findDSLInstance={findDSLInstance}>
-          <div className='editor-preview' onClick={() => null}>
-            <Engine />
+        <DragMoveContainer show={true} title="预览" id="preview">
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <DropAble onAddComponent={updateComponentInstance} findDSLInstance={findDSLInstance}>
+              <div className='editor-preview' onClick={() => null}>
+                <Engine />
+              </div>
+            </DropAble>
+            <div className='editor-preview-size-container'>
+              <span>{size.width}</span>
+              ×
+              <span>{size.height}</span>
+            </div>
           </div>
-        </DropAble>
+        </DragMoveContainer>
         <div style={{ flex: 1 }}></div>
         {/* <TimeLine /> */}
-        <RectInspect />
+        {/* <RectInspect /> */}
       </div>
     </>
   );

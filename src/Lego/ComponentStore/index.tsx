@@ -14,6 +14,7 @@ const setMaterial = (material: any) => {
 
 const ComponentStore = ({ children }:any) => {
   const [isDev] = useSignal('app', 'isDev');
+  const [api] = useSignal('app', 'api');
   const [getAllTemplate] = useSignal('app', 'api.allTemplate');
   const [materialObject] = useSignal('app', 'material');
   const [allTemplate = []] = useSignal('app', 'allTemplate');
@@ -42,7 +43,7 @@ const ComponentStore = ({ children }:any) => {
   return (
     <div className="ComponentStore-container">
       <div style={{ flex: 1, overflow: 'scroll' }}>
-        <Components isDev={isDev} material={material} onClick={onClick} />
+        <Components api={api} isDev={isDev} material={material} onClick={onClick} />
         <Templates allTemplate={allTemplate} onDeleteTemplate={onDeleteTemplate} />
       </div>
       { children }

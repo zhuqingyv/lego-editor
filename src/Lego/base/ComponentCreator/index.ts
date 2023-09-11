@@ -5,10 +5,10 @@ export interface CreateParams {
   schema: object;
   editorView: () => any;
   view: () => any;
-  editorViewCode?: string;
   editorViewTransformCode?: string;
   schemaCode?: string;
   cssCode?: string;
+  jsxCode?: string;
 };
 
 class ComponentCreator {
@@ -18,13 +18,7 @@ class ComponentCreator {
   }
   components = new Map();
 
-  create = ({ name, icon, schema, editorView, view, editorViewCode, editorViewTransformCode, schemaCode, cssCode }: CreateParams) => {
-    // 查重
-    if (this.components.get(name)) {
-      console.warn(`『${name}』is repeat!`);
-      return;
-    };
-
+  create = ({ name, icon, schema, editorView, view, jsxCode, editorViewTransformCode, schemaCode, cssCode }: CreateParams) => {
     const component = {
       name,
       icon,
@@ -32,7 +26,7 @@ class ComponentCreator {
       editorView,
       view,
 
-      editorViewCode,
+      jsxCode,
       editorViewTransformCode,
       schemaCode,
       cssCode

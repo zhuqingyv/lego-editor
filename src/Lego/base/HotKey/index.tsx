@@ -11,6 +11,8 @@ import { useSignal } from 'react-use-signal';
 import { toast, TypeEnum } from 'toast'
 // @ts-ignore
 import { zipDSL } from 'lib';
+// @ts-ignore
+import service from '@service';
 
 class HotKeyCore {
   event = null;
@@ -37,6 +39,7 @@ class HotKeyCore {
         // @ts-ignore
         this.check();
       };
+      this.cacheKey = []
     });
 
     // @ts-ignore
@@ -96,7 +99,7 @@ class HotKeys extends HotKeyCore {
 };
 
 const hotKey = new HotKeys(
-  [['Meta', 's'], ['Meta', 'Backspace'], ['Meta', 'c'], ['Meta', 'v'], ['Meta', 'g'], ['Meta', 'f']],
+  [['Meta', 's'], ['Meta', 'Backspace'], ['Meta', 'Shift', 'c'], ['Meta', 'Shift', 'v'], ['Meta', 'g'], ['Meta', 'f'], ['Meta', 'Shift', 's']],
   () => null
 );
 
@@ -122,6 +125,16 @@ export const HotKey = () => {
 
   const hotKeyCallback = async({ value, event }:any) => {
     switch(value) {
+      case 'Meta+Shift+s': {
+        event.preventDefault();
+        const { dsl, id, name } = state;
+        service('saveOnLine', {
+          id,
+          dsl,
+          name
+        });
+        break;
+      }
       // 删除元素
       case 'Meta+Backspace': {
         const { isDev } = state;
@@ -131,21 +144,22 @@ export const HotKey = () => {
       }
       // 保存元素
       case 'Meta+s': {
-        toast('保存中', TypeEnum.LOADING);
         event.preventDefault();
-        // const { isDev, currentMaterial } = state;
+        const { isDev, currentMaterial } = state;
 
-        // 当开启dev，并且正在编辑某一个组件时
-        // if (isDev && currentMaterial) {
-        //   alert('编辑组件!');
-        //   return;
-        // };
+        // 当开启dev，并且正在编辑某一个组件时，保存组件
+        if (isDev && currentMaterial) {
+          events.emit(EVENTS.SAVE_COMPONENT);
+          return;
+        };
 
+        // 这里是保存页面
+        toast('保存中', TypeEnum.LOADING);  
         events.emit(EVENTS.SAVE);
         break;
       }
       // 复制元素
-      case 'Meta+c': {
+      case 'Meta+Shift+c': {
         const { isDev, currentComponent } = state;
         if (!isDev) return toast('只有开发环境才允许「复制」元素!', TypeEnum.FAIL);
         if (currentComponent) {
@@ -155,7 +169,7 @@ export const HotKey = () => {
         break;
       }
       // 粘贴元素
-      case 'Meta+v': {
+      case 'Meta+Shift+v': {
         const { copyComponent, isDev } = state;
         if (!isDev) return toast('只有开发环境才允许「粘贴」元素!', TypeEnum.FAIL);
         if (copyComponent) { 

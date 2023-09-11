@@ -3,6 +3,7 @@ import './InjectModel';
 import { useParams } from 'react-router-dom'
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
+import RectInspect from './Editor/RectInspect';
 
 import ToastContainer from './Toast';
 
@@ -23,6 +24,10 @@ import './style.css';
 service('userInfo');
 
 const Lego = () => {
+  if (localStorage.getItem('page-list')) {
+    localStorage.removeItem('page-list');
+    location.reload();
+  };
   const [api] = useSignal('app', 'api');
   const { pageId } = useParams();
 
@@ -30,7 +35,7 @@ const Lego = () => {
     const { components, pageInfo, allTemplate } = api;
     // 获取组件
     components();
-     // 获取页面信息
+    // 获取页面信息
     allTemplate();
     // 获取所有模版
     pageInfo(pageId);
@@ -41,6 +46,7 @@ const Lego = () => {
       <HeaderView />
       {
         <div className='container'>
+          <ComponentEditor />
           <ComponentStore>
             <Tree />
           </ComponentStore>
@@ -50,9 +56,9 @@ const Lego = () => {
       }
       <HotKey />
       <ToastContainer />
-      <ComponentEditor />
       <TemplateCreator />
       <div id='screenShot-container'></div>
+      <RectInspect />
     </>
   );
 };

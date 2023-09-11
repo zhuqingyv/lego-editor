@@ -4,14 +4,13 @@ const SchemaEditor = ({ onChange, currentMaterial }: any) => {
   const { schemaCode } = currentMaterial;
 
   const _onChange = (newCode: string) => {
-    onChange({ type: 'jsx', value: newCode });
+    onChange({ type: 'schema', value: newCode });
   };
 
   return (
     <ReactAce
       mode="json" // 设置编辑器的模式为JavaScript
       theme="chrome" // 设置编辑器的主题
-      readOnly
       enableBasicAutocompletion // 启用基本的自动完成
       enableLiveAutocompletion // 启用实时自动完成
       enableSnippets // 启用代码片段

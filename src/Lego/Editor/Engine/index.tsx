@@ -23,22 +23,6 @@ const EditorView = memo(({ item, rectRegister, material }: any) => {
 
   if (!item?.schemaValue) return null;
 
-  if (item?.editorView) {
-    const ItemEditorView = item.editorView();
-    return (
-      <ItemEditorView
-        lottieZipLoader={LottieZipSourceLoader}
-        rectRegister={(ref: any) => rectRegister(item, ref)}
-        componentInstance={item}
-        key={item.id}
-        DropAble={DropAble}
-        {...item}
-      >
-        {!!(item?.children?.length) && <Engine dsl={item.children} />}
-      </ItemEditorView>
-    )
-  };
-
   if (item?.name && material[item.name]) {
     const ItemEditorView = material[item.name]?.editorView();
     return (

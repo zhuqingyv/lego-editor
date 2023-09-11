@@ -6,6 +6,7 @@ import List from './List';
 import service from '@service';
 
 const PageList = () => {
+  localStorage.setItem('page-list', 'true');
   // 初始化数据
   const [_, setState] = createSignal('pageList', () => {
     service('pageList').then((pages: any[]) => {

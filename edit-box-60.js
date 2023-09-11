@@ -1,0 +1,33 @@
+// 方向一手动开无头像61
+const axios = require('axios');
+const https = require('https');
+
+const agent = new https.Agent({
+  rejectUnauthorized: false // 设置为 false 表示不验证证书
+});
+
+const viewProtocol = "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=";
+
+const edit = () => {
+  axios
+    .put('https://hawkeye.devops.xiaohongshu.com/api/marketing/container_render_rule', {
+      rule: {
+        id: 60,
+        name: '给文杰',
+        viewProtocol
+      }
+    }, { httpsAgent: agent })
+    .then((res = {}) => {
+      debugger;
+      const { data = {} } = res;
+      const { success } = data;
+      if (success) console.log('编辑盒子【手动开】成功!');
+    })
+    .catch((error) => {
+      debugger;
+      console.log('编辑盒子【手动开】失败!', error);
+    });
+};
+
+edit();
+

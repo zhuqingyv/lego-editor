@@ -159,6 +159,24 @@ class HttpGitLabService {
       })
   };
 
+  // 获取文件夹下内容
+  getFolderInfo = async (path = '', callback:any = () => null) => {
+    const { apiUrl, projectId, branch, accessToken } = this;
+    return axios.get(`${apiUrl}/projects/${projectId}/repository/tree?path=${path}`, {
+      headers: {
+        'PRIVATE-TOKEN': accessToken
+      },
+      params: {
+        ref: branch
+      }
+    })
+      .then(async (response) => {
+        const fileList = response.data || [];
+        if (callback) callback(fileList);
+        return fileList;
+      })
+  };
+
   // 新增json文件
   createJsonFile = async (path = '', content = '') => {
     //`https://gitlab.com/api/v4/projects/${projectId}/repository/files`;

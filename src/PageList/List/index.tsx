@@ -16,6 +16,9 @@ const DeleteIcon = ({ id }:any) => {
 };
 
 const PageItem = ({ name, icon, id }:any) => {
+  const onLoad = () => {
+    alert('onLoad')
+  };
   return (
     <Link to={`page/${id}`} reloadDocument={true} style={{ textDecoration: 'none', cursor: 'default' }}>
       <div className='page-list-item-container'>

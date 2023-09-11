@@ -8,9 +8,8 @@ import copy from 'copy-to-clipboard';
 import { Link } from 'react-router-dom';
 import Switch from "react-switch";
 import QRCodeView from 'qrcode.react';
-import { toast, TypeEnum } from 'toast'
 // @ts-ignore
-// import AddComponentButton from './AddComponentButton';
+import { toast, TypeEnum } from 'toast'
 // @ts-ignore
 import SaveButton from './SaveButton';
 import NameChange from './NameChange';
@@ -52,14 +51,14 @@ const Preview = memo(() => {
 
   const stringZipId = compressToBase64(JSON.stringify({ id, dsl: newZipNameIdDsl }));
 
-  const valueDSL = `${baseRouter}?id=${id}&dsl=${stringZipId}`;
-  const value = valueDSL.length >= 2900 ? `${baseRouter}?id=${id}` : valueDSL;
+  const valueDSL = `${baseRouter}?dslId=${id}&dsl=${stringZipId}`;
+  const value = valueDSL.length >= 1000 ? `${baseRouter}?id=${id}` : valueDSL;
 
   const onCopyLink = () => {
-    if (copy(valueDSL)) {
-      toast('复制链接成功', TypeEnum.SUCCESS);
+    if (copy(stringZipId)) {
+      toast('复制DSL成功', TypeEnum.SUCCESS);
     } else {
-      toast('复制链接失败', TypeEnum.FAIL);
+      toast('复制DSL失败', TypeEnum.FAIL);
     };
   };
 
@@ -101,7 +100,7 @@ const HeaderView = memo(() => {
   return (
     <div className='header-container'>
       <Link to='../../' relative="path" reloadDocument style={{ zIndex: 3 }}>
-        <img src="https://picasso-static.xiaohongshu.com/fe-platform/a91e4d0f2e1701115bd59839b5b634cd4f3ea3cc.png" className='header-view-logo' />
+        <img style={{ objectFit: 'contain' }} src="https://picasso-static.xiaohongshu.com/fe-platform/290df008fbd751248c04662111efa2de508c4bd4.png" className='header-view-logo' />
       </Link>
       <NameChange />
       <Preview />
