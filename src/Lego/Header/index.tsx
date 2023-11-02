@@ -2,6 +2,7 @@ import { memo, useState } from 'react';
 import {
   compressToBase64,
 } from 'lz-string';
+
 // @ts-ignore
 import { useSignal } from 'react-use-signal';
 import copy from 'copy-to-clipboard';
@@ -9,7 +10,7 @@ import { Link } from 'react-router-dom';
 import Switch from "react-switch";
 import QRCodeView from 'qrcode.react';
 // @ts-ignore
-import { toast, TypeEnum } from 'toast'
+import { toast, TypeEnum } from 'toast';
 // @ts-ignore
 import SaveButton from './SaveButton';
 import NameChange from './NameChange';
@@ -30,6 +31,35 @@ const zipNoId = (dsl: any = []) => {
   })
 };
 
+const zipNoRepeatName = (newZipNameIdDsl = []) => {
+  let index = 0;
+  const nameMap = {} as any;
+
+  const loop = (array = []) => {
+    array.forEach((item: any) => {
+      const { n, c } = item;
+      // 存在
+      if (nameMap[n] !== undefined) {
+        item.n = nameMap[n];
+      } else {
+        item.n = nameMap[n] = index;
+        index += 1;
+      };
+
+      if (c?.length) {
+        loop(c);
+      };
+    });
+    return array;
+  };
+
+  const newZipNoRepeatName = loop(JSON.parse(JSON.stringify(newZipNameIdDsl)));
+  return {
+    newZipNoRepeatName: newZipNoRepeatName,
+    nameMap: Object.keys(nameMap).map((key) => key)
+  };
+};
+
 // const zipNoObject = (dsl: any = []) => {
 //   return dsl.reduce((pre, cur) => {
 //     const { n, s, c } = cur;
@@ -46,9 +76,7 @@ const Preview = memo(() => {
   const [dsl] = useSignal('app', 'dsl');
   const newZipNameDsl = zipDSL(dsl, true);
   const newZipNameIdDsl = zipNoId(newZipNameDsl);
-
   const baseRouter = 'xhsdiscover://rn/lancer-slim/lego';
-
   const stringZipId = compressToBase64(JSON.stringify({ id, dsl: newZipNameIdDsl }));
 
   const valueDSL = `${baseRouter}?dslId=${id}&dsl=${stringZipId}`;
@@ -82,7 +110,7 @@ const Preview = memo(() => {
 
 const DevChangeButton = memo(() => {
   const [isDev, setState] = useSignal('app', 'isDev');
-  const onChange = async(boolean: boolean) => {
+  const onChange = async (boolean: boolean) => {
     await setState(boolean);
   };
   return (

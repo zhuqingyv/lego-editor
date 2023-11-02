@@ -3,7 +3,7 @@ const dsl = require('./dsl.json');
 
 const edit = () => {
   axios
-    .post('https://hawkeye.devops.beta.xiaohongshu.com/api/marketing/container_render_rule', {
+    .post('https://hawkeye.devops.xiaohongshu.com/api/marketing/container_render_rule', {
       rule: {
         name: '给文杰',
         viewProtocol: dsl

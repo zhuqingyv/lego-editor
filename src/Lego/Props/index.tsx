@@ -7,6 +7,7 @@ import { EVENTS } from 'const';
 import FormRender, { useForm } from 'form-render';
 import './style.css';
 import { useEffect, useRef } from 'react';
+import IframeContainer from './Iframe';
 
 const getSchema = (name: string = '', state: any) => {
   const { material } = state;
@@ -30,11 +31,10 @@ const Props = () => {
     events.emit(EVENTS.UPDATE_COMPONENT_SCHEMA_VALUE, { id, value: formData });
   };
 
-  const onChange = () => {
+  const onChange = (allValues: any) => {
     if (timer?.current) clearTimeout(timer?.current);
 
     timer.current = setTimeout(() => {
-      const allValues = form.getValues();
 
       if (JSON.stringify(currentComponent.schemaValue) !== JSON.stringify(allValues)) {
         const { id } = currentComponent;
@@ -65,15 +65,12 @@ const Props = () => {
     <div className="props-container" style={{ maxHeight: window.innerHeight - 50 }}>
       <span className='props-title'>{ currentComponent?.name ? `◉ ${currentComponent?.name}` : '◌ 未选中组件' }</span>
       <div className='props-form-container' onClick={onClickForm}>
-        <FormRender
-          form={form}
+        <IframeContainer
+          src="https://local.xiaohongshu.com:8080/#/x-render"
           schema={currentComponent?.schema || getSchema(currentComponent?.name, state) || {}}
           onFinish={onFinish}
-          watch={{
-            '#': onChange
-          }}
-          // footer={true}
-          column={1}
+          onChange={onChange}
+          value={currentComponent?.schemaValue}
         />
       </div>
     </div>

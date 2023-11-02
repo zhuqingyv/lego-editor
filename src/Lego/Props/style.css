@@ -21,4 +21,6 @@
 
 .props-form-container {
   padding: 12px;
+  height: 100%;
+  padding-bottom: 200px
 }

@@ -8,13 +8,19 @@
     "preview": "vite preview",
     "creator": "node ./create.js",
     "晒单": "node ./edit-note.jsxxxxx",
+
     "盒子手动开": "node ./edit-box.jsxxxxx",
-    "盒子手动开无头像": "node ./edit-box-60.js",
+    "盒子手动开无头像": "node ./edit-box-60.jsxxxxx",
     "盒子自动开": "node ./edit-box-auto.jsxxxxx",
+    "盒子方向三": "node ./dsl-68.jsxxxxx",
+    "新技术老盒子": "node ./dsl-77.js",
+    "方向三优化": "node ./dsl-79.jsxxxxxx",
+    "尚真调优": "node ./dsl-81.js",
+
     "老盒子": "node ./edit-box-old.jsxxxxx",
     "find": "node ./find.jsxxxxx",
     "prefetch": "node ./dsl-prefetch.jsxxxxx",
-    "user-info": "node ./dsl-66.js"
+    "user-info": "node ./dsl-66.jsxxxxx"
   },
   "dependencies": {
     "@ant-design/icons": "^4.0.2",
@@ -55,7 +61,8 @@
     "react-use-signal": "^1.0.14",
     "react-uuid": "^2.0.0",
     "react-visibility-sensor": "^5.1.1",
-    "require": "^2.4.20"
+    "require": "^2.4.20",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
