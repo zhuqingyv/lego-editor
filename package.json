@@ -9,7 +9,7 @@
     "creator": "node ./create.js",
     "晒单": "node ./edit-note.jsxxxxx",
 
-    "盒子手动开": "node ./edit-box.jsxxxxx",
+    "盒子手动开": "node ./edit-box.js",
     "盒子手动开无头像": "node ./edit-box-60.jsxxxxx",
     "盒子自动开": "node ./edit-box-auto.jsxxxxx",
     "盒子方向三": "node ./dsl-68.jsxxxxx",

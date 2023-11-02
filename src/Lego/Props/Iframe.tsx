@@ -1,14 +1,16 @@
 import { useEffect, useRef } from "react";
 
-const IframeContainer = ({ src, schema, onFinish, onChange, value }) => {
+const IframeContainer = ({ src, schema, onFinish, onChange, value, id }) => {
   const iframeElement = () => {
     return document.querySelector("#x-render-iframe");
   };
 
   const onMessage = ({ data: event }) => {
     const { from, data = {} } = event || {};
+
     if (from === "x-render-iframe") {
-      const { type } = data;
+      const { type, id: messageId } = data;
+      if (messageId !== id) return;
 
       switch (type) {
         case "onChange": {
@@ -31,6 +33,7 @@ const IframeContainer = ({ src, schema, onFinish, onChange, value }) => {
         data: {
           schema,
           value,
+          id
         },
       },
       "*"
@@ -39,9 +42,6 @@ const IframeContainer = ({ src, schema, onFinish, onChange, value }) => {
   window.onmessage = onMessage;
 
   const link = `${src}?time=${Date.now()}`;
-
-  console.clear();
-  console.log(link);
 
   return (
     <iframe
