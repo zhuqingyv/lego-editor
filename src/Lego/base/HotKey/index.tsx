@@ -108,6 +108,7 @@ export const HotKey = () => {
   const [templateCreatorState] = useSignal('template-creator');
 
   const buildComponentInstance = (component: any) => {
+    debugger;
     const componentInstance = creator.build({ name: component.name });
     const { schemaValue } = component;
     Object.assign(componentInstance, { schemaValue });

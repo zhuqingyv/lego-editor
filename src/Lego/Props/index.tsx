@@ -4,10 +4,10 @@ import { useSignal } from "react-use-signal";
 import { events } from "events";
 // @ts-ignore
 import { EVENTS } from "const";
-import FormRender, { useForm } from "form-render";
+// import FormRender, { useForm } from "form-render";
 import "./style.css";
 import { useEffect, useRef } from "react";
-import IframeContainer from "./Iframe";
+import FormRender, { useForm } from "form-render";
 
 const getSchema = (name: string = "", state: any) => {
   const { material } = state;
@@ -49,27 +49,10 @@ const Props = () => {
   };
 
   useEffect(() => {
+    // 当
     if (currentComponent) {
-      if (currentComponent.schemaValue) {
-        const currentValue = form.getValues();
-        if (
-          JSON.stringify(currentValue) !==
-          JSON.stringify(currentComponent.schemaValue)
-        ) {
-          setTimeout(() => {
-            form.setValues(currentComponent.schemaValue);
-          });
-        }
-        return;
-      }
-      const defaultValue = form.getValues();
-      form.setValues(defaultValue);
-      const { id } = currentComponent;
-      events.emit(EVENTS.UPDATE_COMPONENT_SCHEMA_VALUE, {
-        id,
-        value: defaultValue,
-      });
-    }
+      if (currentComponent.schemaValue) form.setValues(currentComponent.schemaValue);
+    };
   }, [currentComponent]);
 
   return (
@@ -83,13 +66,13 @@ const Props = () => {
           : "◌ 未选中组件"}
       </span>
       <div className="props-form-container" onClick={onClickForm}>
-        <IframeContainer
-          src="https://local.xiaohongshu.com:8080/#/x-render"
-          schema={state?.currentComponent?.schema ||  getSchema(currentComponent?.name, state)}
+        <FormRender
+          form={form}
+          schema={getSchema(currentComponent?.name, state)}
+          watch={{
+            '#': onChange
+          }}
           onFinish={onFinish}
-          onChange={onChange}
-          value={state?.currentComponent?.schemaValue}
-          id={state?.currentComponent?.id}
         />
       </div>
     </div>

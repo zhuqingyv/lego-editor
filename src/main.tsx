@@ -6,7 +6,6 @@ import {
 
 import Lego from './Lego';
 import PageList from './PageList';
-import XRender from './XRender';
 import './index.css';
 
 const router = createHashRouter([
@@ -17,10 +16,6 @@ const router = createHashRouter([
   {
     path: 'page/:pageId',
     element: <Lego />,
-  },
-  {
-    path: 'x-render',
-    element: <XRender />
   }
 ])
 
